@@ -1510,16 +1510,24 @@
           },
           savedAt: Date.now()
         };
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
-        showToast('تم حفظ التعديلات في هذا المتصفح');
+        if(__fbDb){
+          __fbDb.ref('siteContent/current').set(payload)
+            .then(() => showToast('تم حفظ التعديلات، وهتظهر لكل زوار الموقع'))
+            .catch(err => {
+              console.error('تعذّر الحفظ في Firebase', err);
+              localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+              showToast('تعذّر الحفظ العام، اتحفظ نسخة محلية بس');
+            });
+        } else {
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+          showToast('تم حفظ التعديلات في هذا المتصفح فقط');
+        }
       } catch(err){
-        showToast('تعذّر الحفظ محليًا (تحقق من إعدادات المتصفح)');
+        showToast('تعذّر الحفظ (تحقق من الاتصال بالإنترنت)');
       }
     }
 
-    function restoreLocalChanges(){
-      let saved;
-      try{ saved = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)); } catch(err){ saved = null; }
+    function applySavedContent(saved){
       if(!saved || !saved.html) return;
       const container = document.getElementById('page-content');
       container.innerHTML = saved.html;
@@ -1530,7 +1538,6 @@
       }
       const yearEl = document.getElementById('year');
       if(yearEl) yearEl.textContent = new Date().getFullYear();
-      // بعد استرجاع HTML لازم نربط فورم الاتصال والصوت تاني لأنه اتبدل بالكامل
       const form = document.getElementById('leadForm');
       if(form && !form.dataset.wired){
         form.dataset.wired = '1';
@@ -1538,6 +1545,22 @@
           e.preventDefault();
           window.__handleLeadSubmit();
         });
+      }
+    }
+    function restoreLocalChanges(){
+      if(__fbDb){
+        __fbDb.ref('siteContent/current').once('value').then(function(snap){
+          applySavedContent(snap.val());
+        }).catch(function(err){
+          console.error('تعذّر تحميل المحتوى من Firebase', err);
+          let saved;
+          try{ saved = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)); } catch(e2){ saved = null; }
+          applySavedContent(saved);
+        });
+      } else {
+        let saved;
+        try{ saved = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)); } catch(err){ saved = null; }
+        applySavedContent(saved);
       }
     }
 
