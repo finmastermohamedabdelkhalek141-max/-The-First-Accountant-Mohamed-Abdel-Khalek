@@ -542,10 +542,6 @@
       <span class="brand-mark">أ</span>
       المحاسب الأول محمد عبد الخالق</div>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#home">الرئيسية</a></li>
-      <li><a href="#cv">السيرة الذاتية</a></li>
-      <li><a href="#services">الخدمات</a></li>
-      <li><a href="#clients">مين بيخدم</a></li>
       <li><a href="#contact" class="nav-cta">ابدأ التواصل الآن</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="القائمة"><span></span><span></span><span></span></button>
@@ -560,10 +556,6 @@
         <span class="acct-code" contenteditable="true">حساب رقم 001 — التعريف</span>
         <h1 class="" contenteditable="true">محاسب متخصص في <span>القوائم المالية و التحليل المالي</span>، متاح للعمل بدوام جزئي</h1>
         <p class="lede" contenteditable="true">بساعدك تفهم أرقامك، وأنظملك حساباتك وملفاتك الضريبية بدقة والتزام، من غير ما تحتاج تعيّن محاسب بدوام كامل.</p>
-        <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary">اطلب استشارة</a>
-          <a href="#services" class="btn btn-ghost">شوف الخدمات</a>
-        </div>
       </div>
       <div class="ledger-page right">
         <div class="figure-row">
@@ -901,13 +893,17 @@
       };
 
       // بنستنى تأكيد الحفظ (سواء من Firebase أو من التخزين المحلي كـ fallback) قبل ما نظهر رسالة النجاح
-      const afterSave = function(success){
+      // status ممكن تبقى: 'ok' (اترسل بنجاح) / 'duplicate' (الرقم ده مسجل قبل كده) / 'error' (حصل خطأ)
+      const afterSave = function(status){
         if(submitBtn){ submitBtn.disabled = false; submitBtn.textContent = 'إرسال الطلب'; }
-        if(success){
+        if(status === 'ok'){
           msg.textContent = 'تم استلام بياناتك بنجاح، هيتم التواصل معاك قريبًا. شكرًا لك!';
           msg.classList.add('ok');
           window.__playSuccessSound && window.__playSuccessSound();
           form.reset();
+        } else if(status === 'duplicate'){
+          msg.textContent = 'رقم الهاتف ده مسجل قبل كده، هيتم التواصل معاك قريبًا. شكرًا لك!';
+          msg.classList.add('err');
         } else {
           msg.textContent = 'حصل خطأ أثناء إرسال بياناتك، من فضلك حاول تاني.';
           msg.classList.add('err');
@@ -922,7 +918,7 @@
       if(window.__saveOwnerRequest){
         window.__saveOwnerRequest(leadData, afterSave);
       } else {
-        afterSave(false);
+        afterSave('error');
       }
     }, 'إرسال الفورم');
   };
@@ -988,8 +984,17 @@
         }catch(e){}
       }
     }
+    // بيقارن رقم الهاتف (مع كود الدولة) مع كل الطلبات المخزّنة عشان يكتشف التكرار
+    function isPhoneDuplicate(data, list){
+      const normalizedNew = String(data.countryCode || '').trim() + String(data.phone || '').trim().replace(/[^0-9]/g, '');
+      return list.some(r => {
+        const normalizedExisting = String(r.countryCode || '').trim() + String(r.phone || '').trim().replace(/[^0-9]/g, '');
+        return normalizedExisting === normalizedNew;
+      });
+    }
+
     // بيتنادى من الفورم بعد ما العميل يدوس "إرسال الطلب"
-    // callback(true/false) بيتنادى بعد ما نتأكد إن الحفظ نجح أو فشل
+    // callback(status) بيتنادى بـ 'ok' / 'duplicate' / 'error' بعد ما نتأكد من نتيجة الحفظ
     window.__saveOwnerRequest = function(data, callback){
       const now = new Date();
       const reqObj = {
@@ -1007,27 +1012,46 @@
       };
 
       if(__fbDb){
-        __fbDb.ref('leads/' + reqObj.id).set(reqObj)
-          .then(() => {
-            notifyOwner(reqObj);
-            if(typeof callback === 'function') callback(true);
+        // بنجيب أحدث نسخة من الطلبات مباشرة من Firebase عشان فحص التكرار يبقى دقيق
+        // حتى لو الصفحة كانت لسه بتزامن __liveRequests
+        __fbDb.ref('leads').once('value')
+          .then(function(snapshot){
+            const val = snapshot.val() || {};
+            const currentList = Object.keys(val).map(k => val[k]);
+            if(isPhoneDuplicate(data, currentList)){
+              if(typeof callback === 'function') callback('duplicate');
+              return;
+            }
+            return __fbDb.ref('leads/' + reqObj.id).set(reqObj)
+              .then(() => {
+                notifyOwner(reqObj);
+                if(typeof callback === 'function') callback('ok');
+              });
           })
           .catch(err => {
             console.error('تعذّر حفظ الطلب في Firebase', err);
             // فallback: احفظ محليًا على الأقل عشان البيانات ماتضاعش
             const list = getLocalOnly();
+            if(isPhoneDuplicate(data, list)){
+              if(typeof callback === 'function') callback('duplicate');
+              return;
+            }
             list.push(reqObj);
             localStorage.setItem(LEAD_KEY, JSON.stringify(list));
-            if(typeof callback === 'function') callback(true);
+            if(typeof callback === 'function') callback('ok');
           });
       } else {
         const list = getRequests();
+        if(isPhoneDuplicate(data, list)){
+          if(typeof callback === 'function') callback('duplicate');
+          return;
+        }
         list.push(reqObj);
         setRequests(list);
         updateBadge();
         notifyOwner(reqObj);
         window.__playNewOrderSound && window.__playNewOrderSound();
-        if(typeof callback === 'function') callback(true);
+        if(typeof callback === 'function') callback('ok');
       }
     };
     function getLocalOnly(){
