@@ -331,7 +331,7 @@
     }
   }
   .tour-play-btn{
-    position:fixed; left:22px; bottom:22px; z-index:60;
+    position:fixed; right:22px; bottom:22px; z-index:60;
     display:flex; align-items:center; gap:8px;
     background:linear-gradient(155deg, var(--green) 0%, var(--green-2) 100%);
     color:var(--parchment); border:1px solid rgba(228,198,135,0.5);
@@ -342,7 +342,7 @@
   }
   .tour-play-btn:hover{ transform:translateY(-2px); box-shadow:0 18px 30px -12px rgba(44,89,71,0.7); }
   @media(max-width:760px){
-    .tour-play-btn{ left:14px; bottom:14px; padding:10px 16px; font-size:.8rem; }
+    .tour-play-btn{ right:14px; bottom:14px; padding:10px 16px; font-size:.8rem; }
   }
   .tour-closing-text{ display:none; }
   body.edit-mode .tour-closing-text{
@@ -1191,7 +1191,7 @@
   // ================= الجولة الصوتية المُرشدة: البند بيظهر ويتقرا، ولما يخلص صوته يظهر اللي بعده،
   // ولما يخلص القسم كله يظهر القسم اللي بعده — لحد آخر قسم في الصفحة ================
   safeRun(function(){
-    if(!('speechSynthesis' in window)) return; // المتصفح ده مش بيدعم النطق، الصفحة بتشتغل عادي بدون الجولة
+    const speechSupported = ('speechSynthesis' in window);
 
     const SECTION_SELECTOR = '.wrap.reveal';
     const TOUR_ITEM_SELECTOR = '.about-text > p, .cv-item, .skill-tag, .service-row, .client-card, .contact-list > li';
@@ -1283,6 +1283,8 @@
         tourToastEl = document.createElement('div');
         tourToastEl.className = 'save-toast';
         tourToastEl.style.bottom = '82px';
+        tourToastEl.style.left = 'auto';
+        tourToastEl.style.right = '20px';
         document.body.appendChild(tourToastEl);
       }
       tourToastEl.textContent = text;
@@ -1353,9 +1355,12 @@
     setBtnState('idle');
     playBtn.addEventListener('click', function(){
       if(running){ stopTour(); return; }
+      if(!speechSupported){
+        showTourToast('المتصفح ده مش بيدعم النطق الصوتي — هتشتغل جولة عرض بصري بدون صوت');
+      }
       // فتح قفل النطق الصوتي على الموبايل (خصوصًا آيفون) — لازم أول نطق يحصل فورًا جوّه لمسة/ضغطة
       // المستخدم مباشرة، مش بعد أي تأخير، وإلا المتصفح بيرفض يشغّل صوت تاني بعدها في نفس الزيارة
-      if('speechSynthesis' in window){
+      if(speechSupported){
         try{
           window.speechSynthesis.cancel();
           window.speechSynthesis.speak(new SpeechSynthesisUtterance(' '));
