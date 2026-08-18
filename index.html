@@ -1211,16 +1211,57 @@
       return clone.textContent.replace(/\s+/g, ' ').trim();
     }
 
+    // بعض الموبايلات (خصوصًا أندرويد) بتحمّل قايمة الأصوات بشكل غير متزامن بعد تحميل الصفحة —
+    // فبنستنى القايمة تجهز قبل أول نطق عشان نلاقي صوت عربي فعلي بدل ما نفشل بصمت
+    function voicesReady(){
+      return new Promise(resolve => {
+        if(!('speechSynthesis' in window)){ resolve([]); return; }
+        let voices = window.speechSynthesis.getVoices();
+        if(voices && voices.length){ resolve(voices); return; }
+        let done = false;
+        const finish = () => {
+          if(done) return;
+          done = true;
+          window.speechSynthesis.removeEventListener('voiceschanged', finish);
+          resolve(window.speechSynthesis.getVoices());
+        };
+        window.speechSynthesis.addEventListener('voiceschanged', finish);
+        setTimeout(finish, 1200); // شبكة أمان لو الحدث ده متطلقش خالص على بعض الأجهزة
+      });
+    }
+
+    function pickArabicVoice(voices){
+      if(!voices || !voices.length) return null;
+      return voices.find(v => v.lang === 'ar-EG')
+        || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ar'))
+        || null;
+    }
+
+    let cachedArabicVoice = null;
+    let noVoiceWarned = false;
+
     function speak(text){
       return new Promise(resolve => {
-        if(!text || reducedMotion){ resolve(); return; }
-        window.speechSynthesis.cancel();
-        const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = 'ar-EG';
-        utter.rate = 0.98;
-        utter.onend = resolve;
-        utter.onerror = resolve;
-        window.speechSynthesis.speak(utter);
+        if(!text || reducedMotion || !('speechSynthesis' in window)){ resolve(); return; }
+        let settled = false;
+        const done = () => { if(settled) return; settled = true; resolve(); };
+        try{
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'ar-EG';
+          utter.rate = 0.98;
+          if(cachedArabicVoice) utter.voice = cachedArabicVoice;
+          else if(!noVoiceWarned){
+            noVoiceWarned = true;
+            showTourToast('الجهاز ده مفيهوش صوت عربي مثبّت — جرّب تفعّل قراءة النصوص باللغة العربية من إعدادات الهاتف');
+          }
+          utter.onend = done;
+          utter.onerror = done;
+          window.speechSynthesis.speak(utter);
+        } catch(e){ done(); return; }
+        // شبكة أمان: لو الصوت مقفول أو الجهاز مش بيرجّع onend لأي سبب، منسيبش الجولة عالقة —
+        // بنكمل تلقائيًا بعد وقت تقديري لطول النص عشان التجربة تفضل ماشية حتى بدون صوت
+        const estMs = Math.min(14000, Math.max(2200, text.length * 90));
+        setTimeout(done, estMs);
       });
     }
 
@@ -1236,12 +1277,29 @@
       else { playBtn.innerHTML = '🔊 استمع للعرض الصوتي'; }
     }
 
+    let tourToastEl = null;
+    function showTourToast(text){
+      if(!tourToastEl){
+        tourToastEl = document.createElement('div');
+        tourToastEl.className = 'save-toast';
+        tourToastEl.style.bottom = '82px';
+        document.body.appendChild(tourToastEl);
+      }
+      tourToastEl.textContent = text;
+      tourToastEl.classList.add('show');
+      clearTimeout(tourToastEl.__hideTimer);
+      tourToastEl.__hideTimer = setTimeout(() => tourToastEl.classList.remove('show'), 4200);
+    }
+
     async function runTour(){
       if(running) return;
       running = true;
       cancelled = false;
       document.body.classList.add('tour-active');
       setBtnState('running');
+
+      const voices = await voicesReady();
+      cachedArabicVoice = pickArabicVoice(voices);
 
       sections.forEach(sec => sec.classList.add('tour-hidden'));
       document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.remove('tour-visible', 'tour-speaking'));
@@ -1280,7 +1338,7 @@
 
     function stopTour(){
       cancelled = true;
-      window.speechSynthesis.cancel();
+      if('speechSynthesis' in window) window.speechSynthesis.cancel();
       document.body.classList.remove('tour-active');
       sections.forEach(sec => sec.classList.remove('tour-hidden'));
       document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.add('tour-visible'));
@@ -1294,7 +1352,16 @@
     playBtn.className = 'tour-play-btn';
     setBtnState('idle');
     playBtn.addEventListener('click', function(){
-      if(running) stopTour(); else runTour();
+      if(running){ stopTour(); return; }
+      // فتح قفل النطق الصوتي على الموبايل (خصوصًا آيفون) — لازم أول نطق يحصل فورًا جوّه لمسة/ضغطة
+      // المستخدم مباشرة، مش بعد أي تأخير، وإلا المتصفح بيرفض يشغّل صوت تاني بعدها في نفس الزيارة
+      if('speechSynthesis' in window){
+        try{
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(new SpeechSynthesisUtterance(' '));
+        } catch(e){}
+      }
+      runTour();
     });
     document.body.appendChild(playBtn);
   }, 'الجولة الصوتية المرشدة');
