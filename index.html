@@ -818,6 +818,60 @@
     <button type="button" class="ib-copy-btn" id="ibCopyBtn">نسخ رابط الموقع</button>
   </div>
 </div>
+
+<!-- نافذة نسخ يدوي بديلة: بعض متصفحات الويب المدمجة (زي واتساب) بتحجب navigator.clipboard و window.prompt
+     من غير ما تدّي أي خطأ واضح، فبنعرض عنصر HTML عادي (مربع نص) المستخدم يقدر يدوس عليه مطولًا وينسخ يدويًا،
+     لأن ده مش معتمد على أي API ممكن يتحجب. -->
+<script>
+function showManualCopyModal(url, message){
+  try{
+    var existing = document.getElementById('manualCopyModal');
+    if(existing) existing.remove();
+
+    var overlay = document.createElement('div');
+    overlay.id = 'manualCopyModal';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;';
+
+    var card = document.createElement('div');
+    card.style.cssText = 'background:#fff;border-radius:14px;padding:22px;max-width:420px;width:100%;text-align:center;font-family:inherit;direction:rtl;box-shadow:0 10px 40px rgba(0,0,0,.3);';
+
+    var title = document.createElement('div');
+    title.textContent = message || 'انسخ الرابط يدويًا';
+    title.style.cssText = 'font-weight:700;font-size:16px;margin-bottom:6px;color:#1a1a1a;';
+
+    var hint = document.createElement('div');
+    hint.textContent = 'دوس مطوّلًا على النص تحت واختار "نسخ" (Copy)';
+    hint.style.cssText = 'font-size:13px;color:#666;margin-bottom:14px;';
+
+    var input = document.createElement('input');
+    input.type = 'text';
+    input.readOnly = true;
+    input.value = url;
+    input.style.cssText = 'width:100%;box-sizing:border-box;padding:12px;border:2px solid #ddd;border-radius:8px;font-size:14px;text-align:center;direction:ltr;margin-bottom:14px;';
+
+    var closeBtn = document.createElement('button');
+    closeBtn.type = 'button';
+    closeBtn.textContent = 'تمام';
+    closeBtn.style.cssText = 'background:#111;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:14px;cursor:pointer;';
+    closeBtn.addEventListener('click', function(){ overlay.remove(); });
+    overlay.addEventListener('click', function(e){ if(e.target === overlay) overlay.remove(); });
+
+    card.appendChild(title);
+    card.appendChild(hint);
+    card.appendChild(input);
+    card.appendChild(closeBtn);
+    overlay.appendChild(card);
+    document.body.appendChild(overlay);
+
+    // محاولة تحديد النص ونسخه تلقائيًا كبونص إضافي، بس النافذة نفسها بتشتغل حتى لو الأمر ده فشل
+    setTimeout(function(){
+      try{ input.focus(); input.select(); input.setSelectionRange(0, url.length); }catch(e){}
+      try{ document.execCommand('copy'); }catch(e){}
+    }, 60);
+  }catch(err){ console.error('تعذّر عرض نافذة النسخ اليدوي', err); }
+}
+</script>
+
 <script>
 (function(){
   try{
@@ -861,10 +915,10 @@
         };
         if(navigator.clipboard && navigator.clipboard.writeText){
           navigator.clipboard.writeText(url).then(done).catch(function(){
-            window.prompt('انسخ الرابط ده يدويًا:', url);
+            showManualCopyModal(url, 'انسخ رابط الموقع يدويًا');
           });
         } else {
-          window.prompt('انسخ الرابط ده يدويًا:', url);
+          showManualCopyModal(url, 'انسخ رابط الموقع يدويًا');
         }
       });
     }
@@ -1437,10 +1491,10 @@
         };
         if(navigator.clipboard && navigator.clipboard.writeText){
           navigator.clipboard.writeText(url).then(doCopy).catch(function(){
-            window.prompt('انسخ الرابط ده وافتحه في Safari أو Chrome:', url);
+            showManualCopyModal(url, 'انسخ الرابط وافتحه في Safari أو Chrome عشان الصوت يشتغل');
           });
         } else {
-          window.prompt('انسخ الرابط ده وافتحه في Safari أو Chrome:', url);
+          showManualCopyModal(url, 'انسخ الرابط وافتحه في Safari أو Chrome عشان الصوت يشتغل');
         }
         return;
       }
