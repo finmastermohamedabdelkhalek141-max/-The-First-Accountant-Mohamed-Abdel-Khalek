@@ -547,8 +547,18 @@
   .client-card .ico{
     width:40px; height:40px; margin:0 auto 16px; color:var(--gold-2);
     display:flex; align-items:center; justify-content:center;
+    position:relative; border-radius:50%; overflow:hidden;
   }
   .client-card .ico svg{ width:30px; height:30px; }
+  .client-card .ico img{ width:100%; height:100%; object-fit:cover; border-radius:50%; display:block; }
+  .ico-edit-btn{
+    display:none; position:absolute; inset:0; align-items:center; justify-content:center;
+    background:rgba(13,24,48,0.6); color:#fff; font-size:.85rem; line-height:1;
+    border:none; border-radius:50%; cursor:pointer; opacity:0; transition:opacity .2s;
+  }
+  body.edit-mode .ico-edit-btn{ display:flex; }
+  body.edit-mode .client-card:hover .ico-edit-btn,
+  body.edit-mode .ico-edit-btn:focus{ opacity:1; }
   .client-card h3{font-family:'Cairo'; font-size:1rem; font-weight:700; color:var(--ink); margin-bottom:8px;}
   .client-card p{font-size:.86rem; opacity:.8;}
 
@@ -1603,6 +1613,48 @@
     }
     wirePortraitControls();
 
+    // ================= رفع صور بدل أيقونات "الأنشطة المستهدفة" =================
+    const iconUploadInput = document.createElement('input');
+    iconUploadInput.type = 'file';
+    iconUploadInput.accept = 'image/*';
+    iconUploadInput.className = 'icon-upload-input';
+    iconUploadInput.style.display = 'none';
+    document.body.appendChild(iconUploadInput);
+    let currentIcoTarget = null;
+
+    function addIconEditButton(ico){
+      if(!ico) return;
+      let btn = ico.querySelector(':scope > .ico-edit-btn');
+      if(!btn){
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'ico-edit-btn';
+        btn.title = 'تغيير الصورة';
+        btn.textContent = '🖼';
+        btn.setAttribute('contenteditable', 'false');
+        ico.appendChild(btn);
+      }
+      if(!btn.dataset.wired){
+        btn.dataset.wired = '1';
+        btn.addEventListener('mousedown', e => { e.preventDefault(); e.stopPropagation(); });
+        btn.addEventListener('touchstart', e => { e.preventDefault(); e.stopPropagation(); }, {passive:false});
+        btn.addEventListener('click', e => {
+          e.preventDefault(); e.stopPropagation();
+          currentIcoTarget = ico;
+          iconUploadInput.click();
+        });
+      }
+    }
+    iconUploadInput.addEventListener('change', function(e){
+      const file = e.target.files && e.target.files[0];
+      iconUploadInput.value = '';
+      if(!file || !currentIcoTarget) return;
+      compressImageFile(file, 300, 0.85).then(function(dataUrl){
+        currentIcoTarget.innerHTML = '<img src="' + dataUrl + '" alt="أيقونة النشاط">';
+        addIconEditButton(currentIcoTarget);
+      }).catch(() => alert('تعذّر معالجة الصورة، جرّب صورة تانية'));
+    });
+
     const LEAD_KEY = 'accountantLeadRequests';
     let __liveRequests = [];
     let __ownerScreenUnlockedOnce = false;
@@ -2229,6 +2281,7 @@
       document.body.classList.add('edit-mode');
       makeEditable();
       wireAddBulletButtons();
+      document.querySelectorAll('.client-card .ico').forEach(addIconEditButton);
       GROUPS.forEach(g => {
         const container = document.querySelector(g.selector);
         if(!container) return;
@@ -2249,6 +2302,7 @@
             addRemoveButton(el);
             makeEditable();
             wireAddBulletButtons();
+            el.querySelectorAll('.ico').forEach(addIconEditButton);
             requestAnimationFrame(() => {
               el.classList.add('stagger-in');
               const section = el.closest('.reveal');
@@ -2275,7 +2329,7 @@
 
     function getCleanContentClone(){
       const clone = document.getElementById('page-content').cloneNode(true);
-      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove').forEach(el => el.remove());
+      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove, .ico-edit-btn, .icon-upload-input').forEach(el => el.remove());
       clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
       clone.querySelectorAll('[data-wired]').forEach(el => el.removeAttribute('data-wired'));
       clone.querySelectorAll('.item-wrap').forEach(el => el.classList.remove('item-wrap'));
@@ -2364,7 +2418,7 @@
 
     function downloadEditedPage(){
       const clone = document.documentElement.cloneNode(true);
-      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove, #tourPlayBtn').forEach(el => el.remove());
+      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove, .ico-edit-btn, .icon-upload-input, #tourPlayBtn').forEach(el => el.remove());
       clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
       clone.querySelectorAll('[data-wired]').forEach(el => el.removeAttribute('data-wired'));
       clone.querySelectorAll('.item-wrap').forEach(el => el.classList.remove('item-wrap'));
