@@ -1063,6 +1063,60 @@
     }
   }, 'تأثير الظهور');
 
+  // ================= قراءة البند صوتيًا لما الماوس يقف عليه (Web Speech API) =================
+  safeRun(function(){
+    if(!('speechSynthesis' in window)) return; // المتصفح ده مش بيدعم النطق
+    const ITEM_SELECTOR = window.__STAGGER_ITEM_SELECTOR || '.cv-item, .service-row, .client-card, .skill-tag, .figure-row';
+    const HOVER_DELAY_MS = 250; // تأخير بسيط عشان مرور الماوس السريع فوق البنود منيقرأش كل حاجة
+    let hoverTimer = null;
+    let currentItem = null;
+
+    function speakItem(item){
+      window.speechSynthesis.cancel(); // يقطع أي قراءة سابقة لسه شغالة
+      const clone = item.cloneNode(true);
+      clone.querySelectorAll('.remove-item-btn, .remove-bullet-btn, .add-item-btn, .add-bullet-btn').forEach(el => el.remove());
+      const text = clone.textContent.replace(/\s+/g, ' ').trim();
+      if(!text) return;
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = 'ar-EG';
+      utter.rate = 1;
+      window.speechSynthesis.speak(utter);
+    }
+
+    document.addEventListener('mouseover', function(e){
+      const item = e.target.closest(ITEM_SELECTOR);
+      if(!item || item === currentItem) return;
+      currentItem = item;
+      clearTimeout(hoverTimer);
+      hoverTimer = setTimeout(() => { speakItem(item); }, HOVER_DELAY_MS);
+    });
+    document.addEventListener('mouseout', function(e){
+      const item = e.target.closest(ITEM_SELECTOR);
+      if(!item) return;
+      const related = e.relatedTarget && e.relatedTarget.closest ? e.relatedTarget.closest(ITEM_SELECTOR) : null;
+      if(related === item) return; // لسه جوّه نفس البند
+      clearTimeout(hoverTimer);
+      if(currentItem === item){
+        currentItem = null;
+        window.speechSynthesis.cancel();
+      }
+    });
+    // دعم اللمس على الموبايل/التابلت — الضغط على أي بند يقراه (مفيش hover أصلًا على اللمس)
+    document.addEventListener('touchstart', function(e){
+      const item = e.target.closest(ITEM_SELECTOR);
+      if(!item) return;
+      if(e.target.closest('.remove-item-btn, .remove-bullet-btn, .add-item-btn, .add-bullet-btn')) return;
+      clearTimeout(hoverTimer);
+      speakItem(item);
+    }, {passive:true});
+    // دعم التنقل بلوحة المفاتيح (Tab) لنفس التجربة لمستخدمي قارئات الشاشة
+    document.addEventListener('focusin', function(e){
+      const item = e.target.closest(ITEM_SELECTOR);
+      if(!item) return;
+      speakItem(item);
+    });
+  }, 'قراءة البنود صوتيًا');
+
   // ================= إرسال نموذج العميل + رسالة تأكيد واضحة =================
   window.__handleLeadSubmit = function(){
     safeRun(function(){
