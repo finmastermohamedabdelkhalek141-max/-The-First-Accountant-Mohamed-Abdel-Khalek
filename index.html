@@ -1319,6 +1319,9 @@
         let settled = false;
         const done = () => { if(settled) return; settled = true; resolve(); };
         try{
+          // نلغي أي كلام سابق لسه شغال أو عالق في الطابور قبل ما نبدأ الجملة الجديدة
+          // ده بيمنع مشكلة إن الصوت "يفضل متأخر" ويقرا نص البند اللي فات بدل البند الحالي
+          window.speechSynthesis.cancel();
           const utter = new SpeechSynthesisUtterance(text);
           utter.lang = 'ar-EG';
           utter.rate = 0.98;
@@ -1329,10 +1332,29 @@
           }
           utter.onend = done;
           utter.onerror = done;
-          window.speechSynthesis.speak(utter);
+          // بعض المتصفحات محتاجة لحظة صغيرة بعد cancel() قبل ما تقبل speak() جديد
+          setTimeout(() => {
+            try{ window.speechSynthesis.speak(utter); }catch(e2){ done(); }
+          }, 30);
         } catch(e){ done(); return; }
-        const estMs = Math.min(14000, Math.max(2200, text.length * 90));
-        setTimeout(done, estMs);
+        // نحسب مهلة أطول شوية من تقدير طول النص، وبرضه بنستمر نتأكد إن الكلام لسه شغال فعليًا
+        // قبل ما نقفل الانتظار، عشان النصوص الطويلة (بعد أي تعديل) متتقطعش قبل ما تخلص
+        const estMs = Math.min(20000, Math.max(2500, text.length * 110));
+        let checks = 0;
+        const maxChecks = Math.ceil(estMs / 250) + 4;
+        const poll = setInterval(() => {
+          checks++;
+          if(settled){ clearInterval(poll); return; }
+          if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
+            clearInterval(poll);
+            done();
+            return;
+          }
+          if(checks >= maxChecks){
+            clearInterval(poll);
+            done();
+          }
+        }, 250);
       });
     }
 
