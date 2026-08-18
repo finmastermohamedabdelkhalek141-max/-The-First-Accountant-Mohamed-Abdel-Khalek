@@ -1,6 +1,30 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
+<!-- توجيه تلقائي لفتح الموقع في Chrome لو المستخدم فاتحه من داخل متصفح مدمج (واتساب/فيسبوك/انستجرام/تيك توك) -->
+<script>
+(function(){
+  try{
+    var ua = navigator.userAgent || navigator.vendor || '';
+    var isInApp = /FBAN|FBAV|FB_IAB|Instagram|TikTok|musical_ly|Line\/|Snapchat|Twitter|LinkedInApp|Pinterest|WhatsApp/i.test(ua);
+    var isAndroid = /Android/i.test(ua);
+    var isIOS = /iPhone|iPad|iPod/i.test(ua);
+
+    // أندرويد: تحويل مباشر وتلقائي لـ Chrome عن طريق Intent URL
+    if(isInApp && isAndroid){
+      var target = location.href.replace(/^https?:\/\//, '');
+      location.href = 'intent://' + target + '#Intent;scheme=https;package=com.android.chrome;end';
+    }
+
+    // آيفون: مفيش طريقة برمجية تجبر فتح Safari/Chrome من جوه تطبيق تاني (قيود آبل)
+    // فبنكتفي بإظهار رسالة إرشادية بسيطة للمستخدم
+    if(isInApp && isIOS){
+      window.__showOpenInBrowserBanner = true;
+    }
+  }catch(err){ console.error('تعذّر توجيه المتصفح تلقائيًا', err); }
+})();
+</script>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المحاسب الأول محمد عبد الخالق</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
@@ -23,6 +47,20 @@
     --shadow: 0 30px 60px -28px rgba(6,12,24,0.55);
     --shadow-soft: 0 14px 30px -18px rgba(6,12,24,0.35);
     --ease: cubic-bezier(.22,.85,.32,1);
+  }
+  .inapp-browser-banner{
+    display:none;
+    position:fixed; top:0; left:0; right:0; z-index:500;
+    background:var(--ink); color:var(--parchment);
+    font-family:'Cairo', sans-serif; font-size:.85rem; font-weight:700;
+    padding:12px 40px; text-align:center; line-height:1.7;
+    box-shadow:0 6px 16px -8px rgba(0,0,0,.5);
+  }
+  .inapp-browser-banner.show{ display:block; }
+  .inapp-browser-banner .sub{ font-weight:500; opacity:.85; font-size:.78rem; }
+  .inapp-browser-banner .close-banner{
+    position:absolute; top:8px; left:12px; background:none; border:none; color:var(--parchment);
+    font-size:1.05rem; cursor:pointer; opacity:.75; padding:2px 8px;
   }
   ::selection{ background:var(--gold-2); color:var(--ink-2); }
   :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radius:2px; }
@@ -748,11 +786,35 @@
 </head>
 <body class="">
 
+<!-- بانر احتياطي: بيظهر بس لو التوجيه التلقائي مش هيشتغل (زي آيفون) -->
+<div id="inappBanner" class="inapp-browser-banner">
+  <button type="button" class="close-banner" id="inappBannerClose">×</button>
+  لأفضل تجربة، افتح الموقع في المتصفح
+  <div class="sub">دوس على أيقونة (⋯ أو Share) في الأعلى واختار "Open in Browser" أو "فتح في Safari"</div>
+</div>
+<script>
+(function(){
+  try{
+    if(window.__showOpenInBrowserBanner){
+      var banner = document.getElementById('inappBanner');
+      if(banner) banner.classList.add('show');
+    }
+    var closeBtn = document.getElementById('inappBannerClose');
+    if(closeBtn){
+      closeBtn.addEventListener('click', function(){
+        var banner = document.getElementById('inappBanner');
+        if(banner) banner.classList.remove('show');
+      });
+    }
+  }catch(err){ console.error('خطأ في بانر فتح المتصفح', err); }
+})();
+</script>
+
 <div id="page-content">
 <nav class="nav">
   <div class="nav-inner">
     <div class="brand">
-      <span class="brand-mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABrCAMAAACL+LbVAAAA/1BMVEXl0qGXn6y5iiSbbCZWb40hNVnl5uJUZnjdtVkdRGgACTccTYO6mmfixnfMny/Fq4SlfEGfq8N+kavDvsv+/v4EJlIAGkvw59Pq6emMmKq2hiyxucXm1rLGmDANNmbatEyNWAfRqEpneZOrdxbHp2/R1duZpLLFytOYZBDaxJIuSGyneSzQpTbSuYzbyagUM1VzhJhUaYcAFjsDK2M3U3axiUrVtnJ4iaTm2sWibBDW2+K6lFCkq7a7ws3DmktGWHEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClIR4kAAAAQHRSTlP/////////////////////////////////////////////////////////////////////////////////////73leyQAADN5JREFUeNrtmgl3mswagAF3Y5K2dzYYRNkFZBUF9///r+47mL0m0abtd+6535w2hkWeefd3hkjoHxrSv+B/wf+C/4/B9J8Cr+g/BDb1fwZMJ4e/D9YlGBNNkoLkL4M1bXJ7O5kokfSXVU2XtjJRZhH9K6qm9EUgjZW1rYB7se7pnL9hfwZMA9MUQD2QdPikczuylQChLv+RqS5CFR7kHObBfiNYWsH/+Vz8XAX6SWzJdqhjm83vG6/drjaqQUgbdUv+28DSXEK345Wk35rBk01Xwp317eOxW93klRWSErWJ+pvA0txEel+XVqvgw/vU8qaycOXiC8mfgekcBNb1yXz+WaKyOris2iwnhvtlMNVRfz5B+mq1upU+CR1W5aWRhp5rgKkr92tgU0LmRJIuTsqsyytLNQzwcfcr4NVcoqYuQYLsB59ZpAlnNc/UysoM9zsJvwCWzDml0u2tCaH0oZ7hplOpcgeEGDd55voYV78Onpgmon1zbk70n5MY6KH5rStBzr6bTB4SmGVgGD4ysMF+FUxN8Oc+pWeEnUwm5t2EnqJt0ozHS5v93ufhJsOY/xo4QPp8TiUQbaWfA8M4zYj2xe+3T9fabYv7OTcgnNvd68HBHEljXdchVZroQ7Aufp0/P4YTjEur8ojKiHU9GPxKh0DqA/esqk1zcrqgm8C9e5ldPDCyUfJc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" alt="شعار المحاسب الأول محمد عبد الخالق"></span>
+      <span class="brand-mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABrCAMAAACL+LbVAAAA/1BMVEXl0qGXn6y5iiSbbCZWb40hNVnl5uJUZnjdtVkdRGgACTccTYO6mmfixnfMny/Fq4SlfEGfq8N+kavDvsv+/v4EJlIAGkvw59Pq6emMmKq2hiyxucXm1rLGmDANNmbatEyNWAfRqEpneZOrdxbHp2/R1duZpLLFytOYZBDaxJIuSGyneSzQpTbSuYzbyagUM1VzhJhUaYcAFjsDK2M3U3axiUrVtnJ4iaTm2sWibBDW2+K6lFCkq7a7ws3DmktGWHEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClIR4kAAAAQHRSTlP/////////////////////////////////////////////////////////////////////////////////////73leyQAADN5JREFUeNrtmgl3mswagAF3Y5K2dzYYRNkFZBUF9///r+47mL0m0abtd+6535w2hkWeefd3hkjoHxrSv+B/wf+C/4/B9J8Cr+g/BDb1fwZMJ4e/D9YlGBNNkoLkL4M1bXJ7O5kokfSXVU2XtjJRZhH9K6qm9EUgjZW1rYB7se7pnL9hfwZMA9MUQD2QdPikczuylQChLv+RqS5CFR7kHObBfiNYWsH/+Vz8XAX6SWzJdqhjm83vG6/drjaqQUgbdUv+28DSXEK345Wk35rBk01Xwp317eOxW93klRWSErWJ+pvA0txEel+XVqvgw/vU8qaycOXiC8mfgekcBNb1yXz+WaKyOris2iwnhvtlMNVRfz5B+mq1upU+CR1W5aWRhp5rgKkr92tgU0LmRJIuTsqsyytLNQzwcfcr4NVcoqYuQYLsB59ZpAlnNc/UysoM9zsJvwCWzDml0u2tCaH0oZ7hplOpcgeEGDd55voYV78Onpgmon1zbk70n5MY6KH5rStBzr6bTB4SmGVgGD4ysMF+FUxN8Oc+pWeEnUwm5t2EnqJt0ozHS5v93ufhJsOY/xo4QPp8TiUQbaWfA8M4zYj2xe+3T9fabYv7OTcgnNvd68HBHEljXdchVZroQ7Aufp0/P4YTjEur8ojKiHU9GPxKh0DqA/esqk1zcrqgm8C9e5ld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" alt="شعار المحاسب الأول محمد عبد الخالق"></span>
       المحاسب الأول محمد عبد الخالق</div>
     <ul class="nav-links" id="navLinks">
       <li><a href="#contact" class="nav-cta">ابدأ التواصل الآن</a></li>
