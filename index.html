@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0197)file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8_%D8%A7%D9%84%D8%A3%D9%88%D9%84_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123456_3.html -->
+<!-- saved from url=(0197)file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8_%D8%A7%D9%84%D8%A3%D9%88%D9%84_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82200003_2.html -->
 <html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1020,73 +1020,14 @@
     if(yearElTop) yearElTop.textContent = new Date().getFullYear();
   }, 'سنة الفوتر');
 
-  // ================= محرك الأصوات (بدون ملفات خارجية — Web Audio API) =================
+  // ================= محرك الأصوات (متوقف — النغمات الموسيقية اتلغت بناءً على طلب المالك) =================
   safeRun(function(){
-    let audioCtx = null;
-    function getCtx(){
-      if(!audioCtx){
-        const AC = window.AudioContext || window.webkitAudioContext;
-        if(!AC) return null;
-        audioCtx = new AC();
-      }
-      if(audioCtx.state === 'suspended') audioCtx.resume().catch(()=>{});
-      return audioCtx;
-    }
-    function tone(freq, startTime, duration, type, gainPeak){
-      const ctx = getCtx();
-      if(!ctx) return;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      osc.type = type || 'sine';
-      osc.frequency.value = freq;
-      gain.gain.setValueAtTime(0.0001, ctx.currentTime + startTime);
-      gain.gain.exponentialRampToValueAtTime(gainPeak || 0.15, ctx.currentTime + startTime + 0.01);
-      gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + startTime + duration);
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(ctx.currentTime + startTime);
-      osc.stop(ctx.currentTime + startTime + duration + 0.02);
-    }
-    window.__playClickSound = function(){
-      safeRun(function(){ tone(720, 0, 0.06, 'sine', 0.12); }, 'صوت نقرة');
-    };
-    // نغمات ظهور البنود — كل قسم له طابع صوتي مختلف (موجة وسلم نغمي مختلف)، وكل بند جوّه القسم بياخد نغمة أعلى شوية من اللي قبله
-    const SECTION_CHIME_PROFILES = {
-      home:     { wave:'sine',     scale:[392.00,440.00,493.88,523.25,587.33], dur:0.5,  gain:0.10 }, // دافئ — الصفحة الرئيسية
-      cv:       { wave:'triangle', scale:[523.25,587.33,659.25,698.46,783.99,880.00], dur:0.4, gain:0.09 }, // برّاق — النبذة المهنية
-      services: { wave:'sine',     scale:[349.23,392.00,440.00,466.16,523.25], dur:0.45, gain:0.10 }, // هادي — الخدمات
-      clients:  { wave:'triangle', scale:[466.16,523.25,587.33,622.25,698.46], dur:0.4,  gain:0.09 }, // مميز — الأنشطة المستهدفة
-      default:  { wave:'sine',     scale:[440.00,493.88,523.25,587.33], dur:0.4, gain:0.09 }
-    };
-    window.__playItemChime = function(sectionKey, index){
-      safeRun(function(){
-        const profile = SECTION_CHIME_PROFILES[sectionKey] || SECTION_CHIME_PROFILES.default;
-        const note = profile.scale[index % profile.scale.length];
-        const octaveShift = Math.pow(2, Math.floor(index / profile.scale.length));
-        tone(note * octaveShift, 0, profile.dur, profile.wave, profile.gain);
-      }, 'نغمة ظهور بند');
-    };
-    // صوت تنبيه لطلب جديد (نغمتين متصاعدتين واضحتين) — بيشتغل عند وصول الطلب للمالك
-    window.__playNewOrderSound = function(){
-      safeRun(function(){
-        tone(660, 0, 0.14, 'triangle', 0.18);
-        tone(880, 0.15, 0.22, 'triangle', 0.18);
-        tone(990, 0.34, 0.18, 'triangle', 0.14);
-      }, 'صوت طلب جديد');
-    };
-    // صوت تأكيد نجاح إرسال الفورم للعميل نفسه
-    window.__playSuccessSound = function(){
-      safeRun(function(){
-        tone(523, 0, 0.12, 'sine', 0.14);
-        tone(659, 0.1, 0.12, 'sine', 0.14);
-        tone(784, 0.2, 0.2, 'sine', 0.16);
-      }, 'صوت نجاح الإرسال');
-    };
-    document.addEventListener('click', function(e){
-      const el = e.target.closest('button, a.btn, a.nav-cta');
-      if(el) window.__playClickSound();
-    }, true);
-  }, 'محرك الأصوات');
+    // الدوال اتسابت موجودة عشان أي مكان تاني في الكود بينادي عليها منيكسرش، لكنها دلوقتي مالهاش أي تأثير صوتي
+    window.__playClickSound = function(){};
+    window.__playItemChime = function(){};
+    window.__playNewOrderSound = function(){};
+    window.__playSuccessSound = function(){};
+  }, 'محرك الأصوات (متوقف)');
 
   safeRun(function(){
     const navToggle = document.getElementById('navToggle');
@@ -2339,7 +2280,7 @@
     }
   })();
   }, 'أدوات المالك');
-</script><div class="owner-toolbar"><button class="owner-btn" id="ownerBtn" title="أدوات المالك">🔒<span class="req-badge" id="reqBadge"></span></button><div class="save-toast">تم تنزيل نسخة معدّلة من الصفحة</div></div>
+</script><button type="button" id="tourPlayBtn" class="tour-play-btn">🔊 استمع للعرض الصوتي</button><div class="owner-toolbar"><button class="owner-btn" id="ownerBtn" title="أدوات المالك">🔒<span class="req-badge" id="reqBadge"></span></button><div class="save-toast">تم تنزيل نسخة معدّلة من الصفحة</div></div>
 
 
 </body></html>
