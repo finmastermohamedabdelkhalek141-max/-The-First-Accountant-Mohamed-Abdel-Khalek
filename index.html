@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- saved from url=(0194)file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8_%D8%A7%D9%84%D8%A3%D9%88%D9%84_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123_5.html -->
-<html lang="ar" dir="rtl" style="--ink: #1B2A3D; --green: #33322c; --parchment: #F7F3EA;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المحاسب الأول محمد عبد الخالق</title>
@@ -147,6 +147,30 @@
     opacity:.6;
   }
   .hero .wrap{ position:relative; z-index:1; }
+  .hero-flex{ display:flex; align-items:stretch; gap:28px; }
+  .hero-flex .ledger-book{ flex:1 1 auto; min-width:0; }
+  .owner-portrait{
+    display:none; /* مخفية تمامًا لحد ما يترفع صورة فعلية — منفضلش فراغ أو أيقونة صورة مكسورة */
+    position:relative;
+    flex:0 0 240px;
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid var(--gold);
+    box-shadow:0 40px 80px -30px rgba(0,0,0,0.65), 0 0 0 8px rgba(255,255,255,0.03);
+    animation: bookRise .85s var(--ease) both;
+  }
+  .owner-portrait.has-image{ display:block; }
+  .owner-portrait img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .owner-portrait-remove{
+    display:none; position:absolute; top:8px; left:8px; width:26px; height:26px; border-radius:50%;
+    background:rgba(13,24,48,0.75); color:#fff; border:1px solid rgba(255,255,255,0.4);
+    font-size:1rem; line-height:1; cursor:pointer; align-items:center; justify-content:center;
+  }
+  body.edit-mode .owner-portrait.has-image .owner-portrait-remove{ display:flex; }
+  @media(max-width:900px){
+    .hero-flex{ flex-direction:column; }
+    .owner-portrait{ flex:0 0 auto; height:280px; }
+  }
   .ledger-book{
     position:relative;
     border:1px solid var(--gold);
@@ -254,22 +278,17 @@
   .reveal.show{opacity:1; transform:translateY(0);}
   @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
 
-  /* دخول متتابع (stagger) للبطاقات جوّا كل قسم — كل بطاقة بتظهر بعد اللي قبلها بلحظة بسيطة، عشان يحس الزائر إن كل حاجة اتصممت بعناية مش ظاهرة فجأة كلها مرة واحدة.
-     ملحوظة: بنغيّر opacity بس هنا (من غير transform) عشان منعملش تعارض مع تأثيرات الـ hover الموجودة أصلاً على البطاقات دي (زي رفعة .client-card عند المرور عليها). */
-  .reveal .cv-item, .reveal .service-row, .reveal .client-card{
+  /* دخول متتابع (stagger) للبطاقات جوّا كل قسم — كل بند بيظهر بعد اللي قبله بفاصل زمني (متحكم فيه من الجافاسكريبت)،
+     عشان يحس الزائر إن كل بند بيظهر لوحده بالتتابع مش كلهم مرة واحدة. */
+  .reveal .cv-item, .reveal .service-row, .reveal .client-card, .reveal .skill-tag, .reveal .figure-row{
     opacity:0;
     transition:opacity .6s var(--ease);
-    transition-delay:0s;
   }
-  .reveal.show .cv-item, .reveal.show .service-row, .reveal.show .client-card{ opacity:1; }
-  .reveal.show .cv-item:nth-of-type(1), .reveal.show .service-row:nth-of-type(1), .reveal.show .client-card:nth-of-type(1){ transition-delay:.05s; }
-  .reveal.show .cv-item:nth-of-type(2), .reveal.show .service-row:nth-of-type(2), .reveal.show .client-card:nth-of-type(2){ transition-delay:.14s; }
-  .reveal.show .cv-item:nth-of-type(3), .reveal.show .service-row:nth-of-type(3), .reveal.show .client-card:nth-of-type(3){ transition-delay:.23s; }
-  .reveal.show .cv-item:nth-of-type(4), .reveal.show .service-row:nth-of-type(4), .reveal.show .client-card:nth-of-type(4){ transition-delay:.32s; }
-  .reveal.show .cv-item:nth-of-type(5), .reveal.show .service-row:nth-of-type(5), .reveal.show .client-card:nth-of-type(5){ transition-delay:.41s; }
-  .reveal.show .cv-item:nth-of-type(6), .reveal.show .service-row:nth-of-type(6), .reveal.show .client-card:nth-of-type(6){ transition-delay:.5s; }
+  .reveal.show .cv-item.stagger-in, .reveal.show .service-row.stagger-in, .reveal.show .client-card.stagger-in, .reveal.show .skill-tag.stagger-in, .reveal.show .figure-row.stagger-in{
+    opacity:1;
+  }
   @media (prefers-reduced-motion: reduce){
-    .reveal .cv-item, .reveal .service-row, .reveal .client-card{ opacity:1; transition:none; }
+    .reveal .cv-item, .reveal .service-row, .reveal .client-card, .reveal .skill-tag, .reveal .figure-row{ opacity:1; transition:none; }
   }
 
   .section-head{
@@ -684,6 +703,7 @@
 <!-- HOME -->
 <header class="hero" id="home">
   <div class="wrap">
+    <div class="hero-flex">
     <div class="ledger-book reveal show">
       <div class="ledger-page left">
         <span class="acct-code">حساب رقم 001 — التعريف</span>
@@ -704,6 +724,11 @@
           <span class="val">دوام جزئي / بالمشروع</span>
         </div>
       </div>
+    </div>
+    <div class="owner-portrait" id="ownerPortrait">
+      <img id="ownerPortraitImg" alt="الصورة الشخصية">
+      <button type="button" class="owner-portrait-remove" id="ownerPortraitRemove" title="حذف الصورة">×</button>
+    </div>
     </div>
   </div>
 </header>
@@ -955,6 +980,22 @@
     window.__playClickSound = function(){
       safeRun(function(){ tone(720, 0, 0.06, 'sine', 0.12); }, 'صوت نقرة');
     };
+    // نغمات ظهور البنود — كل قسم له طابع صوتي مختلف (موجة وسلم نغمي مختلف)، وكل بند جوّه القسم بياخد نغمة أعلى شوية من اللي قبله
+    const SECTION_CHIME_PROFILES = {
+      home:     { wave:'sine',     scale:[392.00,440.00,493.88,523.25,587.33], dur:0.5,  gain:0.10 }, // دافئ — الصفحة الرئيسية
+      cv:       { wave:'triangle', scale:[523.25,587.33,659.25,698.46,783.99,880.00], dur:0.4, gain:0.09 }, // برّاق — النبذة المهنية
+      services: { wave:'sine',     scale:[349.23,392.00,440.00,466.16,523.25], dur:0.45, gain:0.10 }, // هادي — الخدمات
+      clients:  { wave:'triangle', scale:[466.16,523.25,587.33,622.25,698.46], dur:0.4,  gain:0.09 }, // مميز — الأنشطة المستهدفة
+      default:  { wave:'sine',     scale:[440.00,493.88,523.25,587.33], dur:0.4, gain:0.09 }
+    };
+    window.__playItemChime = function(sectionKey, index){
+      safeRun(function(){
+        const profile = SECTION_CHIME_PROFILES[sectionKey] || SECTION_CHIME_PROFILES.default;
+        const note = profile.scale[index % profile.scale.length];
+        const octaveShift = Math.pow(2, Math.floor(index / profile.scale.length));
+        tone(note * octaveShift, 0, profile.dur, profile.wave, profile.gain);
+      }, 'نغمة ظهور بند');
+    };
     // صوت تنبيه لطلب جديد (نغمتين متصاعدتين واضحتين) — بيشتغل عند وصول الطلب للمالك
     window.__playNewOrderSound = function(){
       safeRun(function(){
@@ -987,13 +1028,38 @@
   }, 'قائمة التنقل');
 
   safeRun(function(){
+    const STAGGER_SECONDS = 0.35; // فاصل زمني معقول بين ظهور كل بند واللي بعده
+    const ITEM_SELECTOR = '.cv-item, .service-row, .client-card, .skill-tag, .figure-row';
+    window.__STAGGER_ITEM_SELECTOR = ITEM_SELECTOR; // بيتشارك مع أدوات المالك عشان أي بند يتضاف يدويًا ياخد نفس المعاملة (ظهور + نغمة)
+    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function staggerItems(section){
+      if(section.__staggered) return; // منمنعش تكرار التشغيل لو الأنيميشن اشتغلت قبل كده
+      section.__staggered = true;
+      const sectionKey = section.id || 'default';
+      const items = section.querySelectorAll(ITEM_SELECTOR);
+      items.forEach((item, i) => {
+        if(reducedMotion){ item.classList.add('stagger-in'); return; }
+        item.style.transitionDelay = '0s';
+        setTimeout(() => {
+          item.classList.add('stagger-in');
+          if(window.__playItemChime) window.__playItemChime(sectionKey, i);
+        }, i * STAGGER_SECONDS * 1000);
+      });
+    }
+
     if(window.IntersectionObserver){
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('show'); } });
+        entries.forEach(e => {
+          if(e.isIntersecting){
+            e.target.classList.add('show');
+            staggerItems(e.target);
+          }
+        });
       }, {threshold:0.12});
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     } else {
-      document.querySelectorAll('.reveal').forEach(el => el.classList.add('show'));
+      document.querySelectorAll('.reveal').forEach(el => { el.classList.add('show'); staggerItems(el); });
     }
   }, 'تأثير الظهور');
 
@@ -1074,7 +1140,7 @@
     // ملحوظة مهمة: أي موقع بيشتغل بالكامل في المتصفح (زي الملف ده) مفيهوش سر 100% آمن مهما عملنا،
     // لإن الكود شغال عند الزائر نفسه. الحل الوحيد المضمون فعليًا هو نظام دخول حقيقي على سيرفر،
     // لكن التشفير هنا + قفل المحاولات تحت يمنعوا القراءة المباشرة والتخمين السريع، وده تحسين حقيقي.
-    const OWNER_PIN_HASH = 'df8413780ab4db769d298d0058cb2a07438c8fb433bf94706ba201eace5ecdc'; // بصمة الرمز الحالي (12003) — لو غيّرت الرمز، احسب بصمته الجديدة وحطها هنا
+    const OWNER_PIN_HASH = 'df8413780ab4db769d298d0058cb2a07438c8fb433bf94706ba201eace5ecdc5'; // بصمة الرمز الحالي (12003) — لو غيّرت الرمز، احسب بصمته الجديدة وحطها هنا
     async function sha256Hex(text){
       const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
       return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
@@ -1114,6 +1180,53 @@
     toolbar.className = 'owner-toolbar';
     toolbar.innerHTML = '<button class="owner-btn" id="ownerBtn" title="أدوات المالك">🔒<span class="req-badge" id="reqBadge"></span></button>';
     document.body.appendChild(toolbar);
+
+    // ===== الصورة الشخصية (بورتريه) — بتتحط جنب دفتر الحسابات، وبتفضل مخفية تمامًا لحد ما المالك يرفعها =====
+    function setOwnerPortrait(dataUrl){
+      const img = document.getElementById('ownerPortraitImg');
+      const wrap = document.getElementById('ownerPortrait');
+      if(!img || !wrap) return;
+      img.onerror = function(){ wrap.classList.remove('has-image'); img.removeAttribute('src'); };
+      img.src = dataUrl;
+      wrap.classList.add('has-image');
+    }
+    function clearOwnerPortrait(){
+      const img = document.getElementById('ownerPortraitImg');
+      const wrap = document.getElementById('ownerPortrait');
+      if(!img || !wrap) return;
+      img.removeAttribute('src');
+      wrap.classList.remove('has-image');
+    }
+    // بيصغّر ويضغط أي صورة يرفعها المالك (عشان متبقاش تقيلة على التخزين المحلي أو التحميل)
+    function compressImageFile(file, maxDim, quality){
+      return new Promise(function(resolve, reject){
+        const reader = new FileReader();
+        reader.onload = function(e){
+          const img = new Image();
+          img.onload = function(){
+            let w = img.width, h = img.height;
+            if(w >= h){ if(w > maxDim){ h = Math.round(h * maxDim / w); w = maxDim; } }
+            else { if(h > maxDim){ w = Math.round(w * maxDim / h); h = maxDim; } }
+            const canvas = document.createElement('canvas');
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = reject;
+          img.src = e.target.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+    function wirePortraitControls(){
+      const btn = document.getElementById('ownerPortraitRemove');
+      if(!btn || btn.dataset.wired) return;
+      btn.dataset.wired = '1';
+      btn.addEventListener('mousedown', e => { e.preventDefault(); e.stopPropagation(); });
+      btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); clearOwnerPortrait(); });
+    }
+    wirePortraitControls();
 
     // ============ إدارة طلبات العملاء (Firebase Realtime Database + إشعارات + تقرير Excel) ============
     const LEAD_KEY = 'accountantLeadRequests'; // fallback محلي لو Firebase مش متاح
@@ -1459,6 +1572,7 @@
         '<div class="accent-row"><label>لون النص الأساسي (للموقع كله)</label><input type="color" id="inkColor" value="' + rgbToHex(getVar('--ink')) + '"></div>' +
         '<div class="accent-row"><label>لون التمييز (للموقع كله)</label><input type="color" id="greenColor" value="' + rgbToHex(getVar('--green')) + '"></div>' +
         '<div class="accent-row"><label>لون الخلفية (للموقع كله)</label><input type="color" id="bgColor" value="' + rgbToHex(getVar('--parchment')) + '"></div>' +
+        '<div class="accent-row"><label>صورتك الشخصية (بجانب دفتر الحسابات)</label><input type="file" id="portraitInput" accept="image/*"></div>' +
         '<button type="button" id="saveFileBtn" class="primary">تنزيل نسخة معدّلة</button>' +
         '<button type="button" id="saveLocalBtn" class="local-save">حفظ التعديلات في المتصفح</button>' +
         '<button type="button" id="lockBtn">تسجيل الخروج</button>';
@@ -1479,6 +1593,11 @@
       panel.querySelector('#inkColor').addEventListener('input', e => document.documentElement.style.setProperty('--ink', e.target.value));
       panel.querySelector('#greenColor').addEventListener('input', e => document.documentElement.style.setProperty('--green', e.target.value));
       panel.querySelector('#bgColor').addEventListener('input', e => document.documentElement.style.setProperty('--parchment', e.target.value));
+      panel.querySelector('#portraitInput').addEventListener('change', function(e){
+        const file = e.target.files && e.target.files[0];
+        if(!file) return;
+        compressImageFile(file, 640, 0.85).then(setOwnerPortrait).catch(() => alert('تعذّر معالجة الصورة، جرّب صورة تانية'));
+      });
       panel.querySelector('#toggleEditBtn').addEventListener('click', () => {
         if(document.body.classList.contains('edit-mode')) exitEditMode(); else enterEditMode();
         panel.remove(); panel = null;
@@ -1770,6 +1889,17 @@
             addRemoveButton(el);
             makeEditable();
             wireAddBulletButtons();
+            // البند الجديد يظهر فورًا (بدل ما يفضل مخفي لحد سكرول جديد) وياخد نغمة قسمه بنفس ترتيبه بين البنود
+            requestAnimationFrame(() => {
+              el.classList.add('stagger-in');
+              const section = el.closest('.reveal');
+              const selector = window.__STAGGER_ITEM_SELECTOR;
+              if(section && selector && window.__playItemChime){
+                const items = Array.from(section.querySelectorAll(selector));
+                const idx = items.indexOf(el);
+                window.__playItemChime(section.id || 'default', idx >= 0 ? idx : items.length - 1);
+              }
+            });
           });
         }
       });
@@ -1789,7 +1919,7 @@
 
     function getCleanContentClone(){
       const clone = document.getElementById('page-content').cloneNode(true);
-      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay').forEach(el => el.remove());
+      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove').forEach(el => el.remove());
       clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
       clone.querySelectorAll('.item-wrap').forEach(el => el.classList.remove('item-wrap'));
       clone.querySelectorAll('.sel-active').forEach(el => el.classList.remove('sel-active'));
@@ -1848,6 +1978,7 @@
           window.__handleLeadSubmit();
         });
       }
+      wirePortraitControls();
     }
     function restoreLocalChanges(){
       if(__fbDb){
@@ -1878,7 +2009,7 @@
 
     function downloadEditedPage(){
       const clone = document.documentElement.cloneNode(true);
-      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay').forEach(el => el.remove());
+      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove').forEach(el => el.remove());
       clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
       clone.querySelectorAll('.item-wrap').forEach(el => el.classList.remove('item-wrap'));
       clone.querySelectorAll('.sel-active').forEach(el => el.classList.remove('sel-active'));
