@@ -1,25 +1,36 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl" style="--ink: #1B2A3D; --green: #3F6B4F; --parchment: #F7F3EA;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<!-- saved from url=(0194)file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8_%D8%A7%D9%84%D8%A3%D9%88%D9%84_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123_5.html -->
+<html lang="ar" dir="rtl" style="--ink: #1B2A3D; --green: #33322c; --parchment: #F7F3EA;"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>المحاسب الأول محمد عبد الخالق</title>
 <link rel="preconnect" href="https://fonts.googleapis.com/">
 <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;800&family=Tajawal:wght@400;500;700&family=Markazi+Text:wght@400;700&display=swap" rel="stylesheet">
+<link href="file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%20%D8%A7%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%AD%D9%85%D8%AF%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123_files/css2" rel="stylesheet">
 <style>
   :root{
-    --ink:#14213D;
-    --ink-2:#0A1626;
-    --parchment:#F8F4EA;
-    --parchment-2:#EFE6D2;
-    --green:#2F5D4E;
-    --gold:#B8923F;
-    --gold-2:#E4C687;
-    --text:#3A3F44;
-    --line: rgba(20,33,61,0.18);
+    --ink:#0D1830;
+    --ink-2:#060C18;
+    --parchment:#F8F5EC;
+    --parchment-2:#EEE3C8;
+    --green:#2C5947;
+    --green-2:#1E4436;
+    --gold:#A47C2B;
+    --gold-2:#E7C67E;
+    --gold-3:#F6E9C4;
+    --text:#383D45;
+    --line: rgba(13,24,48,0.14);
     --red-ink:#8C3B3B;
-    --shadow: 0 24px 48px -24px rgba(10,22,38,0.45);
+    --shadow: 0 30px 60px -28px rgba(6,12,24,0.55);
+    --shadow-soft: 0 14px 30px -18px rgba(6,12,24,0.35);
+    --ease: cubic-bezier(.22,.85,.32,1);
   }
+  ::selection{ background:var(--gold-2); color:var(--ink-2); }
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; border-radius:2px; }
+  ::-webkit-scrollbar{ width:11px; }
+  ::-webkit-scrollbar-track{ background:var(--parchment-2); }
+  ::-webkit-scrollbar-thumb{ background:var(--ink); border:2px solid var(--parchment-2); border-radius:20px; }
+  ::-webkit-scrollbar-thumb:hover{ background:var(--green); }
   .disp{ font-family:'Markazi Text', 'Cairo', serif; }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
@@ -50,10 +61,10 @@
 
   .nav{
     position:sticky; top:0; z-index:50;
-    background:rgba(248,244,234,0.92);
-    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    background:rgba(248,244,234,0.86);
+    -webkit-backdrop-filter:blur(14px) saturate(1.15); backdrop-filter:blur(14px) saturate(1.15);
     border-bottom:1px solid var(--ink);
-    box-shadow:0 1px 0 var(--gold);
+    box-shadow:0 1px 0 var(--gold), 0 18px 30px -24px rgba(8,17,32,0.35);
   }
   .nav-inner{
     max-width:1040px; margin:0 auto; padding:0 24px;
@@ -66,12 +77,23 @@
     color:var(--ink); display:flex; align-items:center; gap:12px;
   }
   .brand-mark{
-    width:34px; height:34px; border-radius:50%;
+    width:40px; height:40px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    font-family:'Markazi Text','Cairo'; font-weight:700; font-size:1.05rem; color:var(--gold-2);
+    font-family:'Markazi Text','Cairo'; font-weight:700; font-size:1.1rem; color:var(--gold-3);
     background:linear-gradient(155deg, var(--ink) 0%, var(--ink-2) 100%);
     border:1px solid var(--gold);
-    box-shadow:inset 0 0 0 1px rgba(228,198,135,0.25);
+    box-shadow:inset 0 0 0 1px rgba(231,198,126,0.3), 0 6px 14px -8px rgba(8,17,32,0.6);
+    position:relative;
+    overflow:hidden;
+    flex-shrink:0;
+  }
+  .brand-mark::after{
+    content:''; position:absolute; inset:-4px; border:1px solid rgba(173,134,54,0.35); border-radius:50%;
+    pointer-events:none;
+  }
+  .brand-mark img{
+    width:100%; height:100%; object-fit:cover; border-radius:50%;
+    display:block;
   }
   .nav-links{display:flex; gap:6px;}
   .nav-links a{
@@ -83,13 +105,14 @@
   }
   .nav-links a:hover{ background:var(--parchment-2); border-color:var(--line); }
   .nav-cta{
-    background:linear-gradient(155deg, var(--green) 0%, #24473c 100%);
+    background:linear-gradient(155deg, var(--green) 0%, var(--green-2) 100%);
     color:var(--parchment)!important;
-    padding:9px 20px; border-radius:3px; font-weight:700; font-size:.85rem;
-    box-shadow:0 8px 18px -10px rgba(47,93,78,0.6);
-    transition:.25s;
+    padding:10px 22px; border-radius:3px; font-weight:700; font-size:.85rem;
+    box-shadow:0 8px 18px -10px rgba(44,89,71,0.65);
+    border:1px solid rgba(228,198,135,0.4)!important;
+    transition:.25s var(--ease);
   }
-  .nav-cta:hover{ transform:translateY(-1px); box-shadow:0 12px 22px -10px rgba(47,93,78,0.7); }
+  .nav-cta:hover{ transform:translateY(-1px); box-shadow:0 14px 24px -10px rgba(44,89,71,0.75); }
   .nav-toggle{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none;}
   .nav-toggle span{width:24px; height:2px; background:var(--ink); display:block;}
 
@@ -106,20 +129,41 @@
   }
 
   .hero{
-    padding:76px 0 44px;
+    padding:96px 0 88px;
     position:relative;
+    background:
+      radial-gradient(ellipse at 30% 0%, rgba(231,198,126,0.10), transparent 55%),
+      radial-gradient(ellipse at 85% 100%, rgba(44,89,71,0.18), transparent 60%),
+      linear-gradient(180deg, var(--ink-2) 0%, var(--ink) 100%);
+    overflow:hidden;
   }
+  .hero::before{
+    content:''; position:absolute; inset:0; pointer-events:none; opacity:.5;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  .hero::after{
+    content:''; position:absolute; left:0; right:0; bottom:0; height:1px;
+    background:linear-gradient(90deg, transparent, var(--gold-2), transparent);
+    opacity:.6;
+  }
+  .hero .wrap{ position:relative; z-index:1; }
   .ledger-book{
     position:relative;
-    border:1px solid var(--ink);
-    border-radius:6px;
+    border:1px solid var(--gold);
+    border-radius:10px;
     background:
       linear-gradient(90deg, transparent 49.3%, var(--gold) 49.3%, var(--ink) 49.9%, var(--ink) 50.1%, var(--gold) 50.7%, transparent 50.7%),
       var(--parchment);
-    box-shadow: var(--shadow), 0 1px 0 rgba(255,255,255,0.4) inset;
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,0.65), 0 0 0 8px rgba(255,255,255,0.03), 0 1px 0 rgba(255,255,255,0.4) inset;
     display:grid; grid-template-columns:1fr 1fr;
     min-height:420px;
+    animation: bookRise .85s var(--ease) both;
   }
+  @keyframes bookRise{
+    from{ opacity:0; transform:translateY(22px) scale(.985); }
+    to{ opacity:1; transform:translateY(0) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce){ .ledger-book{ animation:none; } }
   .ledger-book::before, .ledger-book::after{
     content:''; position:absolute; width:22px; height:22px; pointer-events:none;
     border:1px solid var(--gold); opacity:.55;
@@ -127,40 +171,45 @@
   .ledger-book::before{ top:-1px; right:-1px; border-width:1px 1px 0 0; border-radius:0 6px 0 0; }
   .ledger-book::after{ bottom:-1px; left:-1px; border-width:0 0 1px 1px; border-radius:0 0 0 6px; }
   .seal{
-    position:absolute; top:22px; left:22px; width:54px; height:54px; border-radius:50%;
+    position:absolute; top:22px; left:22px; width:58px; height:58px; border-radius:50%;
     background:linear-gradient(155deg, var(--ink) 0%, var(--ink-2) 100%);
-    border:1px solid var(--gold); box-shadow:0 8px 16px -8px rgba(10,22,38,0.5), inset 0 0 0 1px rgba(228,198,135,0.2);
+    border:1px solid var(--gold); box-shadow:0 10px 20px -8px rgba(10,22,38,0.55), inset 0 0 0 1px rgba(228,198,135,0.22);
     display:flex; align-items:center; justify-content:center;
-    font-family:'Markazi Text','Cairo'; font-weight:700; font-size:1.5rem; color:var(--gold-2);
+    font-family:'Markazi Text','Cairo'; font-weight:700; font-size:1.55rem; color:var(--gold-2);
     transform:rotate(-6deg);
     z-index:2;
+  }
+  .seal::before{
+    content:''; position:absolute; inset:5px; border:1px dashed rgba(231,198,126,0.45); border-radius:50%;
   }
   @media(max-width:760px){ .seal{ display:none; } }
   .ledger-page{padding:40px 36px;}
   .ledger-page.left{border-left:1px solid transparent;}
   .acct-code{
     font-family:'Cairo'; font-weight:900; font-size:.72rem; letter-spacing:.08em;
-    color:var(--green); border:1px solid var(--green); display:inline-block;
-    padding:3px 9px; border-radius:2px; margin-bottom:20px;
+    color:var(--green); border:1px solid var(--green); display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px 4px 6px; border-radius:2px; margin-bottom:20px;
+    background:rgba(44,89,71,0.06);
   }
+  .acct-code::before{ content:''; width:5px; height:5px; border-radius:50%; background:var(--green); }
   .hero h1{
     font-family:'Markazi Text','Cairo',serif;
-    font-size:2.5rem; font-weight:700; color:var(--ink); line-height:1.28; margin-bottom:18px;
+    font-size:2.85rem; font-weight:700; color:var(--ink); line-height:1.24; margin-bottom:20px;
     letter-spacing:.005em;
   }
   .hero h1 span{
     color:var(--green);
-    background-image:linear-gradient(transparent 78%, rgba(184,146,63,0.35) 0);
+    background-image:linear-gradient(transparent 76%, rgba(164,124,43,0.4) 0);
     background-repeat:no-repeat;
   }
   .hero p.lede{
-    font-size:1.05rem; color:var(--text); max-width:44ch; margin-bottom:28px;
+    font-size:1.08rem; color:var(--text); max-width:44ch; margin-bottom:30px;
   }
   .hero-actions{display:flex; gap:12px; flex-wrap:wrap;}
   .btn{
     font-family:'Cairo'; font-weight:700; font-size:.92rem;
-    padding:13px 28px; border-radius:3px; display:inline-flex; align-items:center; gap:8px;
-    transition:.25s; border:1px solid var(--ink);
+    padding:14px 30px; border-radius:4px; display:inline-flex; align-items:center; gap:8px;
+    transition:.25s var(--ease); border:1px solid var(--ink);
     position:relative; overflow:hidden;
   }
   .btn-primary{
@@ -168,27 +217,30 @@
     color:var(--parchment);
     box-shadow:0 12px 24px -12px rgba(10,22,38,0.55);
   }
-  .btn-primary:hover{ transform:translateY(-1px); box-shadow:0 16px 28px -12px rgba(10,22,38,0.65); border-color:var(--gold); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 18px 30px -12px rgba(10,22,38,0.68); border-color:var(--gold); }
   .btn-primary::after{
     content:''; position:absolute; inset:0;
     background:linear-gradient(115deg, transparent 40%, rgba(228,198,135,0.35) 50%, transparent 60%);
     transform:translateX(-120%); transition:transform .6s;
   }
   .btn-primary:hover::after{ transform:translateX(120%); }
-  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--line);}
-  .btn-ghost:hover{background:var(--parchment-2); border-color:var(--ink);}
+  .btn-ghost{background:transparent; color:var(--ink); border-color:var(--ink);}
+  .btn-ghost:hover{background:var(--parchment-2); border-color:var(--gold); color:var(--ink);}
 
   .ledger-page.right{
     display:flex; flex-direction:column; justify-content:center;
   }
   .figure-row{
     display:flex; justify-content:space-between; align-items:baseline;
-    padding:13px 0; border-bottom:1px dashed var(--line);
+    padding:13px 2px; border-bottom:1px dashed var(--line);
     font-family:'Cairo';
+    transition:padding .2s var(--ease), background .2s var(--ease);
+    border-radius:2px;
   }
+  .figure-row:hover{ background:rgba(184,146,63,0.06); padding-inline-start:8px; }
   .figure-row:first-child{border-top:1px dashed var(--line);}
   .figure-row .label{font-size:.86rem; font-weight:500; color:var(--text);}
-  .figure-row .val{font-size:1.2rem; font-weight:800; color:var(--ink);}
+  .figure-row .val{font-size:1.22rem; font-weight:800; color:var(--ink); letter-spacing:.01em;}
   .figure-row .val.credit{color:var(--green);}
 
   @media(max-width:760px){
@@ -197,26 +249,75 @@
     .hero h1{font-size:1.6rem;}
   }
 
-  section{padding:68px 0;}
+  section{padding:88px 0;}
+  .reveal{opacity:0; transform:translateY(26px); transition:opacity .9s cubic-bezier(.16,.7,.24,1), transform .9s cubic-bezier(.16,.7,.24,1);}
+  .reveal.show{opacity:1; transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){ .reveal{ opacity:1; transform:none; transition:none; } }
+
+  /* دخول متتابع (stagger) للبطاقات جوّا كل قسم — كل بطاقة بتظهر بعد اللي قبلها بلحظة بسيطة، عشان يحس الزائر إن كل حاجة اتصممت بعناية مش ظاهرة فجأة كلها مرة واحدة.
+     ملحوظة: بنغيّر opacity بس هنا (من غير transform) عشان منعملش تعارض مع تأثيرات الـ hover الموجودة أصلاً على البطاقات دي (زي رفعة .client-card عند المرور عليها). */
+  .reveal .cv-item, .reveal .service-row, .reveal .client-card{
+    opacity:0;
+    transition:opacity .6s var(--ease);
+    transition-delay:0s;
+  }
+  .reveal.show .cv-item, .reveal.show .service-row, .reveal.show .client-card{ opacity:1; }
+  .reveal.show .cv-item:nth-of-type(1), .reveal.show .service-row:nth-of-type(1), .reveal.show .client-card:nth-of-type(1){ transition-delay:.05s; }
+  .reveal.show .cv-item:nth-of-type(2), .reveal.show .service-row:nth-of-type(2), .reveal.show .client-card:nth-of-type(2){ transition-delay:.14s; }
+  .reveal.show .cv-item:nth-of-type(3), .reveal.show .service-row:nth-of-type(3), .reveal.show .client-card:nth-of-type(3){ transition-delay:.23s; }
+  .reveal.show .cv-item:nth-of-type(4), .reveal.show .service-row:nth-of-type(4), .reveal.show .client-card:nth-of-type(4){ transition-delay:.32s; }
+  .reveal.show .cv-item:nth-of-type(5), .reveal.show .service-row:nth-of-type(5), .reveal.show .client-card:nth-of-type(5){ transition-delay:.41s; }
+  .reveal.show .cv-item:nth-of-type(6), .reveal.show .service-row:nth-of-type(6), .reveal.show .client-card:nth-of-type(6){ transition-delay:.5s; }
+  @media (prefers-reduced-motion: reduce){
+    .reveal .cv-item, .reveal .service-row, .reveal .client-card{ opacity:1; transition:none; }
+  }
+
   .section-head{
-    display:flex; align-items:baseline; gap:16px; margin-bottom:38px;
+    display:flex; align-items:baseline; gap:16px; margin-bottom:40px;
     border-bottom:1px solid var(--ink); padding-bottom:16px;
     position:relative;
   }
   .section-head::after{
-    content:''; position:absolute; right:0; bottom:-2px; width:64px; height:2px;
+    content:''; position:absolute; right:0; bottom:-2px; width:70px; height:2px;
     background:linear-gradient(90deg, var(--gold), transparent);
+    transform:scaleX(0); transform-origin:right; transition:transform .9s .35s var(--ease);
   }
+  .reveal.show .section-head::after{ transform:scaleX(1); }
+  @media (prefers-reduced-motion: reduce){ .section-head::after{ transform:scaleX(1); transition:none; } }
   .section-head .code{
     font-family:'Cairo'; font-weight:900; color:var(--gold);
     font-size:.85rem; border:1px solid var(--gold); padding:3px 10px; border-radius:2px;
     white-space:nowrap; background:rgba(184,146,63,0.07);
   }
-  .section-head h2{font-family:'Markazi Text','Cairo',serif; font-size:1.8rem; font-weight:700; color:var(--ink);}
+  .section-head h2{font-family:'Markazi Text','Cairo',serif; font-size:1.9rem; font-weight:700; color:var(--ink);}
+
+  section#contact{
+    position:relative; z-index:0; color:rgba(248,245,236,0.9);
+    padding-top:96px; padding-bottom:96px;
+  }
+  section#contact::before{
+    content:''; position:absolute; z-index:-1;
+    top:0; bottom:0; left:50%; width:100vw; transform:translateX(-50%);
+    background:
+      radial-gradient(ellipse at 20% 100%, rgba(44,89,71,0.22), transparent 55%),
+      radial-gradient(ellipse at 90% 0%, rgba(231,198,126,0.08), transparent 55%),
+      linear-gradient(180deg, var(--ink) 0%, var(--ink-2) 100%);
+  }
+  section#contact::after{
+    content:''; position:absolute; z-index:-1; left:50%; width:100vw; transform:translateX(-50%);
+    top:0; height:1px; background:linear-gradient(90deg, transparent, var(--gold-2), transparent); opacity:.5;
+  }
+  section#contact .section-head{ border-bottom-color:rgba(231,198,126,0.35); }
+  section#contact .section-head h2{ color:var(--parchment); }
+  section#contact .section-head .code{ color:var(--gold-2); border-color:var(--gold-2); background:rgba(231,198,126,0.08); }
   .section-sub{color:var(--text); opacity:.8; font-size:.95rem; margin-top:-24px; margin-bottom:32px;}
 
   .about-text{max-width:62ch;}
   .about-text p{margin-bottom:14px;}
+  .about-text p:first-of-type::first-letter{
+    font-family:'Markazi Text','Cairo',serif; font-weight:700; color:var(--gold);
+    font-size:2.6em; float:right; line-height:.72; margin:.06em 0 0 .1em;
+  }
 
   .cv-grid{display:grid; grid-template-columns:1fr 1fr; gap:40px;}
   @media(max-width:760px){.cv-grid{grid-template-columns:1fr;}}
@@ -228,10 +329,13 @@
     content:''; width:8px; height:8px; background:var(--green); border-radius:50%; display:inline-block;
   }
   .cv-item{
-    border-bottom:1px dashed var(--line); padding:14px 0;
+    border-bottom:1px dashed var(--line); padding:16px 4px;
+    transition:background .2s var(--ease), padding .2s var(--ease);
+    border-radius:3px;
   }
+  .cv-item:hover{ background:rgba(184,146,63,0.05); padding-inline-start:10px; }
   .cv-item:last-child{border-bottom:none;}
-  .cv-item .role{font-weight:700; color:var(--ink); font-size:.96rem;}
+  .cv-item .role{font-weight:700; color:var(--ink); font-size:.98rem;}
   .cv-item .meta{font-size:.82rem; color:var(--green); font-weight:700; margin-top:2px;}
   .cv-item .desc{font-size:.9rem; margin-top:6px; opacity:.85;}
   .cv-item .desc-list{margin-top:6px; padding-right:0;}
@@ -256,31 +360,39 @@
 
   .skill-tags{display:flex; flex-wrap:wrap; gap:10px;}
   .skill-tag{
-    font-size:.85rem; font-weight:700; padding:8px 16px;
+    font-size:.85rem; font-weight:700; padding:9px 18px;
     border:1px solid var(--ink); border-radius:20px; color:var(--ink);
     background:var(--parchment-2);
-    transition:.2s;
+    transition:.22s var(--ease);
   }
-  .skill-tag:hover{ border-color:var(--gold); box-shadow:0 4px 10px -6px rgba(20,33,61,0.4); }
+  .skill-tag:hover{ border-color:var(--gold); background:var(--parchment); box-shadow:0 6px 14px -8px rgba(20,33,61,0.45); transform:translateY(-2px); }
 
   .services-ledger{
-    border:1px solid var(--ink); border-radius:6px; overflow:hidden;
+    border:1px solid var(--ink); border-radius:8px; overflow:hidden;
     box-shadow:var(--shadow);
   }
   .service-row{
     display:grid; grid-template-columns:64px 1fr; gap:20px;
-    padding:24px 26px; border-bottom:1px solid var(--line);
+    padding:26px 28px; border-bottom:1px solid var(--line);
     background:var(--parchment);
-    transition:.25s;
+    transition:.3s var(--ease);
     position:relative;
   }
   .service-row:last-child{border-bottom:none;}
-  .service-row:hover{background:var(--parchment-2); padding-right:30px;}
-  .service-num{
-    font-family:'Markazi Text','Cairo'; font-weight:700; font-size:1.6rem; color:var(--gold);
-    display:flex; align-items:flex-start; justify-content:center; padding-top:2px;
+  .service-row:hover{background:var(--parchment-2); padding-right:32px;}
+  .service-row::before{
+    content:''; position:absolute; inset-inline-start:0; top:0; bottom:0; width:3px;
+    background:var(--gold); transform:scaleY(0); transform-origin:top; transition:transform .3s var(--ease);
   }
-  .service-row h3{font-size:1.04rem; font-weight:700; color:var(--ink); margin-bottom:6px;}
+  .service-row:hover::before{ transform:scaleY(1); }
+  .service-num{
+    font-family:'Markazi Text','Cairo'; font-weight:700; font-size:1.5rem; color:var(--gold-2);
+    display:flex; align-items:center; justify-content:center;
+    width:44px; height:44px; border-radius:50%;
+    background:linear-gradient(155deg, var(--ink) 0%, var(--ink-2) 100%);
+    border:1px solid var(--gold);
+  }
+  .service-row h3{font-size:1.05rem; font-weight:700; color:var(--ink); margin-bottom:6px;}
   .service-row p{font-size:.9rem; opacity:.85;}
 
   .clients-grid{
@@ -289,12 +401,12 @@
   @media(max-width:700px){.clients-grid{grid-template-columns:1fr;}}
   .client-card{
     border:1px solid var(--line); background:var(--parchment);
-    padding:30px 24px; border-radius:4px; text-align:center;
+    padding:32px 24px; border-radius:6px; text-align:center;
     border-top:3px solid var(--green);
     position:relative; overflow:hidden;
-    transition:transform .25s, box-shadow .25s;
+    transition:transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease);
   }
-  .client-card:hover{ transform:translateY(-4px); box-shadow:var(--shadow); }
+  .client-card:hover{ transform:translateY(-6px); box-shadow:var(--shadow); border-color:var(--gold); }
   .client-card::before{
     content:''; position:absolute; top:0; left:0; width:0; height:0;
     border-style:solid; border-width:0 0 26px 26px; border-color:transparent transparent var(--gold-2) transparent;
@@ -303,8 +415,10 @@
   }
   .client-card:hover::before{ border-width:0 0 36px 36px; }
   .client-card .ico{
-    font-size:1.8rem; margin-bottom:14px;
+    width:40px; height:40px; margin:0 auto 16px; color:var(--gold-2);
+    display:flex; align-items:center; justify-content:center;
   }
+  .client-card .ico svg{ width:30px; height:30px; }
   .client-card h3{font-family:'Cairo'; font-size:1rem; font-weight:700; color:var(--ink); margin-bottom:8px;}
   .client-card p{font-size:.86rem; opacity:.8;}
 
@@ -312,27 +426,38 @@
     display:grid; grid-template-columns:1fr 1.15fr; gap:44px; align-items:start;
   }
   @media(max-width:800px){.contact-wrap{grid-template-columns:1fr;}}
-  .contact-note h3{font-size:1.1rem; color:var(--ink); margin-bottom:12px;}
-  .contact-note p{font-size:.92rem; opacity:.85; margin-bottom:20px;}
+  .contact-note h3{font-size:1.15rem; color:var(--gold-3); margin-bottom:12px; font-family:'Cairo'; font-weight:800;}
+  .contact-note p{font-size:.94rem; opacity:.82; margin-bottom:22px; color:rgba(248,245,236,0.82);}
   .contact-list{display:flex; flex-direction:column; gap:14px;}
-  .contact-list li{display:flex; gap:10px; align-items:center; font-size:.9rem;}
-  .contact-list .dot{width:6px; height:6px; background:var(--gold); border-radius:50%;}
+  .contact-list li{display:flex; gap:10px; align-items:center; font-size:.92rem; color:rgba(248,245,236,0.9); padding-inline-end:6px;}
+  .contact-list .dot{width:6px; height:6px; background:var(--gold-2); border-radius:50%; box-shadow:0 0 8px rgba(231,198,126,0.7); flex:none;}
+  .contact-list .add-item-btn{
+    border-color:var(--gold-2); color:var(--gold-2); list-style:none;
+  }
+  .contact-list .add-item-btn:hover{ background:rgba(231,198,126,0.12); }
+  .contact-list li .remove-item-btn{ top:50%; left:-10px; transform:translateY(-50%); }
 
   form{
-    background:var(--parchment); border:1px solid var(--ink); border-radius:6px;
-    padding:32px; box-shadow:var(--shadow);
+    background:var(--parchment); border:1px solid var(--ink); border-radius:8px;
+    padding:34px; box-shadow:var(--shadow);
+    position:relative;
+  }
+  form::before{
+    content:''; position:absolute; inset-inline-start:0; inset-inline-end:0; top:0; height:4px;
+    background:linear-gradient(90deg, var(--gold), var(--green));
+    border-radius:8px 8px 0 0;
   }
   .field{margin-bottom:18px;}
   .field label{
     display:block; font-size:.85rem; font-weight:700; color:var(--ink); margin-bottom:6px;
   }
   .field input, .field select, .field textarea{
-    width:100%; padding:12px 14px; border:1px solid var(--line);
-    background:#fff; border-radius:3px; font-family:'Tajawal'; font-size:.92rem;
-    color:var(--text); outline:none; transition:.2s;
+    width:100%; padding:13px 14px; border:1px solid var(--line);
+    background:#fff; border-radius:4px; font-family:'Tajawal'; font-size:.92rem;
+    color:var(--text); outline:none; transition:.2s var(--ease);
   }
   .field input:focus, .field select:focus, .field textarea:focus{
-    border-color:var(--green); box-shadow:0 0 0 3px rgba(47,93,78,0.14);
+    border-color:var(--green); box-shadow:0 0 0 3px rgba(44,89,71,0.14);
   }
   .phone-row{display:grid; grid-template-columns:110px 1fr; gap:10px;}
   textarea{resize:vertical; min-height:90px;}
@@ -340,9 +465,16 @@
     width:100%; background:linear-gradient(155deg, var(--ink) 0%, var(--ink-2) 100%);
     color:var(--parchment);
     font-family:'Cairo'; font-weight:700; font-size:.98rem;
-    padding:15px; border:1px solid var(--ink); border-radius:3px; cursor:pointer; transition:.25s;
+    padding:16px; border:1px solid var(--ink); border-radius:4px; cursor:pointer; transition:.25s var(--ease);
+    position:relative; overflow:hidden;
     box-shadow:0 14px 26px -14px rgba(10,22,38,0.55);
   }
+  .submit-btn::after{
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(115deg, transparent 40%, rgba(228,198,135,0.3) 50%, transparent 60%);
+    transform:translateX(-120%); transition:transform .6s;
+  }
+  .submit-btn:hover::after{ transform:translateX(120%); }
   .submit-btn:hover{ transform:translateY(-1px); border-color:var(--gold); box-shadow:0 18px 30px -14px rgba(10,22,38,0.65); }
   .submit-btn:disabled{ opacity:.65; cursor:not-allowed; transform:none; }
   .form-msg{
@@ -369,16 +501,14 @@
   }
 
   footer{
-    border-top:1px solid var(--ink); padding:30px 0; text-align:center;
-    font-size:.85rem; opacity:.8; position:relative;
+    border-top:1px solid var(--ink); padding:34px 0; text-align:center;
+    font-size:.85rem; opacity:.85; position:relative;
+    background:linear-gradient(180deg, transparent, rgba(184,146,63,0.04));
   }
   footer::before{
     content:''; position:absolute; top:-1px; left:50%; transform:translateX(-50%);
-    width:64px; height:2px; background:var(--gold);
+    width:70px; height:2px; background:linear-gradient(90deg, transparent, var(--gold), transparent);
   }
-
-  .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
-  .reveal.show{opacity:1; transform:translateY(0);}
 
   .owner-toolbar{position:fixed; bottom:20px; left:20px; z-index:200;}
   .owner-btn{
@@ -390,7 +520,7 @@
   .owner-panel{
     position:absolute; bottom:60px; left:0;
     background:var(--parchment); border:2px solid var(--ink); border-radius:6px;
-    padding:12px; display:flex; flex-direction:column; gap:8px; min-width:190px;
+    padding:12px; display:flex; flex-direction:column; gap:8px; min-width:225px;
     box-shadow:0 14px 32px -12px rgba(0,0,0,.4);
   }
   .owner-panel button{
@@ -421,6 +551,9 @@
   }
   .pin-cancel{border:1px solid var(--ink); background:var(--parchment-2); color:var(--ink);}
   .pin-ok{border:none; background:var(--green); color:#fff;}
+  .pin-ok:disabled{opacity:.5; cursor:not-allowed;}
+  .pin-box input:disabled{opacity:.6;}
+  .pin-lock-msg{font-size:.78rem; color:var(--red-ink); font-family:'Cairo'; font-weight:700; margin-top:-8px;}
 
   body.edit-mode [contenteditable="true"]{
     outline:1px dashed var(--green); outline-offset:3px; border-radius:2px; cursor:text;
@@ -533,16 +666,16 @@
   }
 </style>
 </head>
-<body>
+<body class="">
 
 <div id="page-content">
 <nav class="nav">
   <div class="nav-inner">
-    <div class="brand" contenteditable="true">
-      <span class="brand-mark">أ</span>
+    <div class="brand">
+      <span class="brand-mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAABrCAMAAACL+LbVAAAA/1BMVEXl0qGXn6y5iiSbbCZWb40hNVnl5uJUZnjdtVkdRGgACTccTYO6mmfixnfMny/Fq4SlfEGfq8N+kavDvsv+/v4EJlIAGkvw59Pq6emMmKq2hiyxucXm1rLGmDANNmbatEyNWAfRqEpneZOrdxbHp2/R1duZpLLFytOYZBDaxJIuSGyneSzQpTbSuYzbyagUM1VzhJhUaYcAFjsDK2M3U3axiUrVtnJ4iaTm2sWibBDW2+K6lFCkq7a7ws3DmktGWHEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClIR4kAAAAQHRSTlP/////////////////////////////////////////////////////////////////////////////////////73leyQAADN5JREFUeNrtmgl3mswagAF3Y5K2dzYYRNkFZBUF9///r+47mL0m0abtd+6535w2hkWeefd3hkjoHxrSv+B/wf+C/4/B9J8Cr+g/BDb1fwZMJ4e/D9YlGBNNkoLkL4M1bXJ7O5kokfSXVU2XtjJRZhH9K6qm9EUgjZW1rYB7se7pnL9hfwZMA9MUQD2QdPikczuylQChLv+RqS5CFR7kHObBfiNYWsH/+Vz8XAX6SWzJdqhjm83vG6/drjaqQUgbdUv+28DSXEK345Wk35rBk01Xwp317eOxW93klRWSErWJ+pvA0txEel+XVqvgw/vU8qaycOXiC8mfgekcBNb1yXz+WaKyOris2iwnhvtlMNVRfz5B+mq1upU+CR1W5aWRhp5rgKkr92tgU0LmRJIuTsqsyytLNQzwcfcr4NVcoqYuQYLsB59ZpAlnNc/UysoM9zsJvwCWzDml0u2tCaH0oZ7hplOpcgeEGDd55voYV78Onpgmon1zbk70n5MY6KH5rStBzr6bTB4SmGVgGD4ysMF+FUxN8Oc+pWeEnUwm5t2EnqJt0ozHS5v93ufhJsOY/xo4QPp8TiUQbaWfA8M4zYj2xe+3T9fabYv7OTcgnNvd68HBHEljXdchVZroQ7Aufp0/P4YTjEur8ojKiHU9GPxKh0DqA/esqk1zcrqgm8C9e5ldPDCyUfJc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" alt="شعار المحاسب الأول محمد عبد الخالق"></span>
       المحاسب الأول محمد عبد الخالق</div>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#contact" class="nav-cta">ابدأ التواصل الآن</a></li>
+      <li><a href="file:///C:/Users/hp/Downloads/index_110.html#contact" class="nav-cta">ابدأ التواصل الآن</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="القائمة"><span></span><span></span><span></span></button>
   </div>
@@ -553,22 +686,22 @@
   <div class="wrap">
     <div class="ledger-book reveal show">
       <div class="ledger-page left">
-        <span class="acct-code" contenteditable="true">حساب رقم 001 — التعريف</span>
-        <h1 class="" contenteditable="true">محاسب متخصص في <span>القوائم المالية و التحليل المالي</span>، متاح للعمل بدوام جزئي</h1>
-        <p class="lede" contenteditable="true">بساعدك تفهم أرقامك، وأنظملك حساباتك وملفاتك الضريبية بدقة والتزام، من غير ما تحتاج تعيّن محاسب بدوام كامل.</p>
+        <span class="acct-code">حساب رقم 001 — التعريف</span>
+        <h1 class="">محاسب متخصص في <span>القوائم المالية و التحليل المالي</span>، متاح للعمل بدوام جزئي</h1>
+        <p class="lede">خبرة 5 سنوات في القوائم المالية والتحليل المالي، أقدّمها لك بدقة والتزام في مواعيدها — من غير ما تتحمّل تكلفة تعيين محاسب بدوام كامل.</p>
       </div>
       <div class="ledger-page right">
         <div class="figure-row">
-          <span class="label" contenteditable="true">سنوات الخبرة</span>
-          <span class="val" contenteditable="true">5 سنوات</span>
+          <span class="label">سنوات الخبرة</span>
+          <span class="val">5 سنوات</span>
         </div>
         <div class="figure-row">
-          <span class="label" contenteditable="true">التخصص</span>
-          <span class="val credit" contenteditable="true">قوائم مالية و التحليل المالي</span>
+          <span class="label">التخصص</span>
+          <span class="val credit">قوائم مالية و التحليل المالي</span>
         </div>
         <div class="figure-row">
-          <span class="label" contenteditable="true">نوع التعاون</span>
-          <span class="val" contenteditable="true">دوام جزئي / بالمشروع</span>
+          <span class="label">نوع التعاون</span>
+          <span class="val">دوام جزئي / بالمشروع</span>
         </div>
       </div>
     </div>
@@ -579,135 +712,136 @@
 <section class="wrap reveal show">
   <div class="section-head">
     <span class="code">§ 01</span>
-    <h2 class="" contenteditable="true">الهوية المهنية</h2>
+    <h2 class="">الهوية المهنية</h2>
   </div>
   <div class="about-text">
-    <p class="" contenteditable="true"><strong>محاسب مالي وإداري بخبرة 5 سنوات</strong> في إعداد القوائم المالية، مراجعة الحسابات، التحليل المالي، وإعداد التقارير الضريبية للشركات الصغيرة والمتوسطة. يتميز بالعمل بدقة وأمانة بهدف توفير تقارير واضحة وموثوقة عن أرقام النشاط في أي وقت.</p>
-    <p contenteditable="true">متاح حاليًا للعمل بدوام جزئي أو بمشاريع محددة، سواء متابعة شهرية أو تجهيز ملف ضريبي أو مراجعة حسابات لمرة واحدة.</p>
+    <p class=""><strong>محاسب مالي وإداري بخبرة 5 سنوات</strong> في إعداد القوائم المالية، مراجعة الحسابات، التحليل المالي، وإعداد التقارير الضريبية للشركات الصغيرة والمتوسطة. أعمل بدقة وأمانة، وهدفي الأول إنك تاخد تقارير واضحة وموثوقة عن أرقام نشاطك في أي وقت تحتاجها.</p>
+    <p>متاح حاليًا للعمل بدوام جزئي أو بمشاريع محددة، سواء متابعة شهرية، تجهيز ملف ضريبي، أو مراجعة حسابات لمرة واحدة.</p>
   </div>
 </section>
 
 <!-- CV -->
-<section class="wrap reveal show" id="cv">
+<section class="wrap reveal" id="cv">
   <div class="section-head">
     <span class="code">§ 02</span>
-    <h2 class="" contenteditable="true">النبذة المهنية</h2>
+    <h2 class="">النبذة المهنية</h2>
   </div>
   <div class="cv-grid">
     <div class="cv-block">
-      <h3 contenteditable="true">الخبرات العملية</h3>
+      <h3>الخبرات العملية</h3>
       
       <div class="cv-item item-wrap">
-        <div class="role" contenteditable="true">إعداد القوائم المالية والتحليل المالي بدقة عالية.</div>
-        <div class="meta" contenteditable="true"><span style="color: rgb(27, 42, 61); font-size: 15.36px;">مراجعة الحسابات والتدقيق الداخلي و الخارجي.</span></div>
+        <div class="role">إعداد القوائم المالية والتحليل المالي بدقة عالية.</div>
+        <div class="meta">مراجعة الحسابات والتدقيق الداخلي و الخارجي.</div>
         <ul class="desc-list">
-          <li class="" contenteditable="true"><font color="#1b2a3d"><span style="font-size: 15.36px;"><b>إعداد التقارير الضريبية ومتابعة الالتزامات المالية.</b></span></font></li>
-        <li class="" contenteditable="true"><font color="#1b2a3d" style="font-size: 14.4px;"><span style="font-size: 15.36px;"><b>إ</b></span></font><font color="#1b2a3d"><span style="font-size: 15.36px;"><b>دارة الحسابات للمشاريع الصغيرة والمتوسطة والمطاعم والكافيهات.</b></span></font></li><li class="" contenteditable="true"><font color="#1b2a3d"><span style="font-size: 15.36px;"><b>تحليل الأداء المالي وتقديم توصيات لتحسين الربحية والنمو.</b></span></font></li></ul>
-        
-      <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
-    <div class="cv-item item-wrap"><div class="role" contenteditable="true">تصميم وتطوير تطبيقات مخصصة لعرض الخدمات والإعلانات بشكل احترافي.</div><div class="meta" contenteditable="true"><br></div><ul class="desc-list"></ul><button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div><button type="button" class="add-item-btn">+ إضافة خبرة</button></div>
+          <li>إعداد التقارير الضريبية ومتابعة الالتزامات المالية.</li>
+          <li>إدارة الحسابات للمشاريع الصغيرة والمتوسطة والمطاعم والكافيهات.</li>
+          <li>تحليل الأداء المالي وتقديم توصيات لتحسين الربحية والنمو.</li>
+        </ul>
+      <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
+    <button type="button" class="add-item-btn" data-wired="1" contenteditable="false">+ إضافة خبرة</button></div>
     <div class="cv-block">
-      <h3 class="" contenteditable="true">الشهادات&nbsp;</h3>
+      <h3 class="">الشهادات&nbsp;</h3>
       <div class="cv-item item-wrap">
-        <div class="role" contenteditable="true">بكالوريوس تجارة شعبة محاسبة</div>
-        <div class="meta" contenteditable="true">كلية التجارة ـــــــ جامعة الزقازيق</div>
-      <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
+        <div class="role">بكالوريوس تجارة شعبة محاسبة</div>
+        <div class="meta">كلية التجارة ـــــــ جامعة الزقازيق</div>
+      <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
       
-    <button type="button" class="add-item-btn">+ إضافة شهادة</button></div>
+    <button type="button" class="add-item-btn" data-wired="1" contenteditable="false">+ إضافة شهادة</button></div>
   </div>
   <div style="margin-top:32px;">
-    <h3 style="font-family:'Cairo'; font-size:1.05rem; margin-bottom:16px; display:flex; align-items:center; gap:10px;"><span style="width:8px;height:8px;background:var(--green);border-radius:50%;display:inline-block;"></span>المهارات</h3>
+    <h3 style="font-family:&#39;Cairo&#39;; font-size:1.05rem; margin-bottom:16px; display:flex; align-items:center; gap:10px;"><span style="width:8px;height:8px;background:var(--green);border-radius:50%;display:inline-block;"></span>المهارات</h3>
     <div class="skill-tags">
-      <span class="skill-tag item-wrap" contenteditable="true">إعداد تقارير مالية<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></span>
-      <span class="skill-tag item-wrap" contenteditable="true">مراجعة الحسابات<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></span>
-      <span class="skill-tag item-wrap" contenteditable="true">التعامل مع الضرائب<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></span>
-      <span class="skill-tag item-wrap" contenteditable="true">إعداد الموازنات<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></span>
-      <span class="skill-tag item-wrap" contenteditable="true">تطوير البرامج محاسبية<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></span>
-      <span class="skill-tag item-wrap" contenteditable="true">Excel متقدم<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></span>
-    <button type="button" class="add-item-btn">+ إضافة مهارة</button></div>
+      <span class="skill-tag item-wrap">إعداد تقارير مالية<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></span>
+      <span class="skill-tag item-wrap">مراجعة الحسابات<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></span>
+      <span class="skill-tag item-wrap">التعامل مع الضرائب<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></span>
+      <span class="skill-tag item-wrap">إعداد الموازنات<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></span>
+      <span class="skill-tag item-wrap">تطوير البرامج محاسبية<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></span>
+      <span class="skill-tag item-wrap">Excel متقدم<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></span>
+    <button type="button" class="add-item-btn" data-wired="1" contenteditable="false">+ إضافة مهارة</button></div>
   </div>
 </section>
 
 <!-- SERVICES -->
-<section class="wrap reveal show" id="services">
+<section class="wrap reveal" id="services">
   <div class="section-head">
     <span class="code">§ 03</span>
-    <h2 contenteditable="true">الخدمات</h2>
+    <h2>الخدمات</h2>
   </div>
   <div class="services-ledger">
     <div class="service-row item-wrap">
-      <div class="service-num" contenteditable="true">أ</div>
+      <div class="service-num">أ</div>
       <div>
-        <h3 contenteditable="true">متابعة الإيرادات والمصروفات</h3>
-        <p contenteditable="true">تسجيل ومتابعة دورية لحركة الإيرادات والمصروفات بشكل منظم وواضح.</p>
+        <h3>متابعة الإيرادات والمصروفات</h3>
+        <p>تسجيل ومتابعة دورية لحركة الإيرادات والمصروفات بشكل منظم وواضح.</p>
       </div>
-    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
+    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
     <div class="service-row item-wrap">
-      <div class="service-num" contenteditable="true">ب</div>
+      <div class="service-num">ب</div>
       <div>
-        <h3 contenteditable="true">إعداد ملفات الضرائب</h3>
-        <p contenteditable="true">تجهيز وتقديم الملفات الضريبية بدقة وفي المواعيد المحددة.</p>
+        <h3>إعداد ملفات الضرائب</h3>
+        <p>تجهيز وتقديم الملفات الضريبية بدقة وفي المواعيد المحددة.</p>
       </div>
-    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
+    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
     <div class="service-row item-wrap">
-      <div class="service-num" contenteditable="true">ج</div>
+      <div class="service-num">ج</div>
       <div>
-        <h3 contenteditable="true">تجهيز السياسات المحاسبية</h3>
-        <p contenteditable="true">وضع سياسات محاسبية واضحة تناسب طبيعة نشاطك وحجمه.</p>
+        <h3>تجهيز السياسات المحاسبية</h3>
+        <p>وضع سياسات محاسبية واضحة تناسب طبيعة نشاطك وحجمه.</p>
       </div>
-    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
+    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
     <div class="service-row item-wrap">
-      <div class="service-num" contenteditable="true">د</div>
+      <div class="service-num">د</div>
       <div>
-        <h3 contenteditable="true">تقارير مالية دورية</h3>
-        <p contenteditable="true">تقارير شهرية أو ربع سنوية توضح الوضع المالي لنشاطك بشكل مبسط.</p>
+        <h3>تقارير مالية دورية</h3>
+        <p>تقارير شهرية أو ربع سنوية توضح الوضع المالي لنشاطك بشكل مبسط.</p>
       </div>
-    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
-  <button type="button" class="add-item-btn">+ إضافة خدمة</button></div>
+    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
+  <button type="button" class="add-item-btn" data-wired="1" contenteditable="false">+ إضافة خدمة</button></div>
 </section>
 
 <!-- TARGET CLIENTS -->
-<section class="wrap reveal show" id="clients">
+<section class="wrap reveal" id="clients">
   <div class="section-head">
     <span class="code">§ 04</span>
-    <h2 contenteditable="true">الأنشطة المستهدفة</h2>
+    <h2>الأنشطة المستهدفة</h2>
   </div>
   <div class="clients-grid">
     <div class="client-card item-wrap">
-      <div class="ico" contenteditable="true">🍽️</div>
-      <h3 contenteditable="true">مطاعم وكافيهات</h3>
-      <p contenteditable="true">متابعة يومية للمصروفات والإيرادات وضبط التكاليف التشغيلية.</p>
-    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
+      <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path><path d="M17 9h1.5a2.5 2.5 0 0 1 0 5H17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path><path d="M8 3.5c0 1-1 1-1 2s1 1 1 2M12 3.5c0 1-1 1-1 2s1 1 1 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"></path></svg></div>
+      <h3>مطاعم وكافيهات</h3>
+      <p>متابعة يومية للمصروفات والإيرادات وضبط التكاليف التشغيلية.</p>
+    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
     <div class="client-card item-wrap">
-      <div class="ico" contenteditable="true">🏢</div>
-      <h3 contenteditable="true">شركات صغيرة ومتوسطة</h3>
-      <p contenteditable="true">تنظيم الحسابات وإعداد التقارير والملفات الضريبية بشكل دوري.</p>
-    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
+      <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 21V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v17M13 21v-8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v8M3 21h18M8 7h1M8 10h1M8 13h1M8 16h1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+      <h3>شركات صغيرة ومتوسطة</h3>
+      <p>تنظيم الحسابات وإعداد التقارير والملفات الضريبية بشكل دوري.</p>
+    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
     <div class="client-card item-wrap">
-      <div class="ico" contenteditable="true">🚀</div>
-      <h3 contenteditable="true">مشاريع ناشئة</h3>
-      <p contenteditable="true">وضع أساس محاسبي سليم من أول يوم لنمو مستدام ومنظم.</p>
-    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false">×</button></div>
-  <button type="button" class="add-item-btn">+ إضافة نشاط</button></div>
+      <div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 19h16M6 19v-5M10 19V9M14 19v-8M18 19v-3M15 4h4v4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+      <h3>مشاريع ناشئة</h3>
+      <p>وضع أساس محاسبي سليم من أول يوم لنمو مستدام ومنظم.</p>
+    <button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></div>
+  <button type="button" class="add-item-btn" data-wired="1" contenteditable="false">+ إضافة نشاط</button></div>
 </section>
 
 <!-- CONTACT -->
-<section class="wrap reveal show" id="contact">
+<section class="wrap reveal" id="contact">
   <div class="section-head">
     <span class="code">§ 05</span>
-    <h2 class="" contenteditable="true"><strong>ابدأ التواصل الآن</strong></h2>
+    <h2 class=""><strong>ابدأ التواصل الآن</strong></h2>
   </div>
   <div class="contact-wrap">
     <div class="contact-note">
-      <h3 contenteditable="true">محتاج محاسب لنشاطك؟</h3>
-      <p contenteditable="true">سجّل بياناتك في النموذج، وهرد عليك في أقرب وقت لمناقشة التفاصيل.</p>
+      <h3>محتاج محاسب لنشاطك؟</h3>
+      <p>سجّل بياناتك في النموذج، وهرد عليك في أقرب وقت لمناقشة التفاصيل.</p>
       <ul class="contact-list">
-        <li contenteditable="true"><span class="dot"></span> رد خلال 24 ساعة</li>
-        <li contenteditable="true"><span class="dot"></span> استشارة أولية بدون التزام</li>
-        <li contenteditable="true"><span class="dot"></span> تعامل بسرية تامة</li>
-      </ul>
+        <li class="item-wrap"><span class="dot"></span> رد خلال 24 ساعة<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></li>
+        
+        <li class="item-wrap"><span class="dot"></span> تعامل بسرية تامة<button type="button" class="remove-item-btn" title="حذف العنصر ده" contenteditable="false" data-wired="1">×</button></li>
+      <button type="button" class="add-item-btn" data-wired="1" contenteditable="false">+ إضافة سطر</button></ul>
     </div>
-    <form id="leadForm">
+    <form id="leadForm" data-wired="1">
       <div class="field">
         <label for="name">الاسم بالكامل</label>
         <input type="text" id="name" name="name" placeholder="اكتب اسمك" required="">
@@ -751,15 +885,15 @@
 </section>
 
 <footer>
-  <div class="wrap" contenteditable="true"><p><span style="white-space: pre-wrap;"><strong>جميع الحقوق محفوظة © <span id="year"></span> – تصميم وتنفيذ: المحاسب الأول محمد عبد الخالق</strong></span></p></div>
+  <div class="wrap"><p><span style="white-space: pre-wrap;"><strong>جميع الحقوق محفوظة © <span id="year">2026</span> – تصميم وتنفيذ: المحاسب الأول محمد عبد الخالق</strong></span></p></div>
 </footer>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer=""></script>
+<script src="file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%20%D8%A7%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%AD%D9%85%D8%AF%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123_files/xlsx.full.min.js.download" defer=""></script>
 
 <!-- Firebase (compat SDK — يشتغل مباشرة بـ script tag من غير أدوات بناء، مناسب لـ GitHub Pages) -->
-<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<script src="file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%20%D8%A7%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%AD%D9%85%D8%AF%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123_files/firebase-app-compat.js.download"></script>
+<script src="file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8%20%D8%A7%D9%84%D8%A3%D9%88%D9%84%20%D9%85%D8%AD%D9%85%D8%AF%20%D8%B9%D8%A8%D8%AF%20%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123_files/firebase-database-compat.js.download"></script>
 <script>
   // إعدادات مشروع Firebase الخاص بالموقع
   const firebaseConfig = {
@@ -935,8 +1069,46 @@
   // ================= أدوات المالك (تعديل/حذف/إضافة) =================
   safeRun(function(){
   (function(){
-    const OWNER_PIN = '12003'; // غيّر الرمز ده براحتك
+    // بدل ما نخزن الرمز السري كنص عادي في الكود (أي حد يفتح "عرض المصدر" كان يقدر يقرأه على طول)،
+    // بنخزن بصمة SHA-256 بتاعته، وبنقارن بصمة اللي المستخدم كاتبه بيها.
+    // ملحوظة مهمة: أي موقع بيشتغل بالكامل في المتصفح (زي الملف ده) مفيهوش سر 100% آمن مهما عملنا،
+    // لإن الكود شغال عند الزائر نفسه. الحل الوحيد المضمون فعليًا هو نظام دخول حقيقي على سيرفر،
+    // لكن التشفير هنا + قفل المحاولات تحت يمنعوا القراءة المباشرة والتخمين السريع، وده تحسين حقيقي.
+    const OWNER_PIN_HASH = 'df8413780ab4db769d298d0058cb2a07438c8fb433bf94706ba201eace5ecdc'; // بصمة الرمز الحالي (12003) — لو غيّرت الرمز، احسب بصمته الجديدة وحطها هنا
+    async function sha256Hex(text){
+      const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text));
+      return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
     let unlocked = false;
+
+    // ===== قفل مؤقت بعد محاولات فاشلة متكررة، عشان حد ميقدرش يجرّب أرقام كتير بسرعة =====
+    const LOCK_KEY = 'daftari_pin_lock_v1';
+    const MAX_ATTEMPTS = 5;
+    const LOCK_MINUTES = 5;
+    function getLockState(){
+      try{ return JSON.parse(localStorage.getItem(LOCK_KEY)) || {attempts:0, lockedUntil:0}; }
+      catch(e){ return {attempts:0, lockedUntil:0}; }
+    }
+    function setLockState(state){
+      try{ localStorage.setItem(LOCK_KEY, JSON.stringify(state)); } catch(e){}
+    }
+    function registerFailedAttempt(){
+      const state = getLockState();
+      state.attempts = (state.attempts || 0) + 1;
+      if(state.attempts >= MAX_ATTEMPTS){
+        state.lockedUntil = Date.now() + LOCK_MINUTES * 60 * 1000;
+        state.attempts = 0;
+      }
+      setLockState(state);
+    }
+    function registerSuccess(){
+      setLockState({attempts:0, lockedUntil:0});
+    }
+    function remainingLockMinutes(){
+      const state = getLockState();
+      const ms = state.lockedUntil - Date.now();
+      return ms > 0 ? Math.ceil(ms / 60000) : 0;
+    }
 
     const toolbar = document.createElement('div');
     toolbar.className = 'owner-toolbar';
@@ -1217,22 +1389,33 @@
     let panel = null;
 
     function openPinPrompt(){
+      const lockedMin = remainingLockMinutes();
       const overlay = document.createElement('div');
       overlay.className = 'pin-overlay';
       overlay.innerHTML =
         '<div class="pin-box">' +
           '<div class="pin-title">أدخل رمز المالك</div>' +
-          '<input type="password" id="pinInput" inputmode="numeric" maxlength="10">' +
+          '<input type="password" id="pinInput" inputmode="numeric" maxlength="10"' + (lockedMin ? ' disabled' : '') + '>' +
+          (lockedMin ? '<div class="pin-lock-msg">تم حظر المحاولات مؤقتًا، حاول تاني بعد ' + lockedMin + ' دقيقة</div>' : '') +
           '<div class="pin-actions">' +
             '<button type="button" class="pin-cancel" id="pinCancel">إلغاء</button>' +
-            '<button type="button" class="pin-ok" id="pinOk">دخول</button>' +
+            '<button type="button" class="pin-ok" id="pinOk"' + (lockedMin ? ' disabled' : '') + '>دخول</button>' +
           '</div>' +
         '</div>';
       document.body.appendChild(overlay);
       const input = overlay.querySelector('#pinInput');
       input.focus();
-      function tryUnlock(){
-        if(input.value === OWNER_PIN){
+      async function tryUnlock(){
+        if(remainingLockMinutes() > 0) return;
+        let typedHash;
+        try{
+          typedHash = await sha256Hex(input.value);
+        } catch(err){
+          input.placeholder = 'تعذّر التحقق، جرّب من متصفح تاني';
+          return;
+        }
+        if(typedHash === OWNER_PIN_HASH){
+          registerSuccess();
           unlocked = true;
           overlay.remove();
           enterEditMode();
@@ -1246,6 +1429,13 @@
             }
           }
         } else {
+          registerFailedAttempt();
+          const lockedNowMin = remainingLockMinutes();
+          if(lockedNowMin > 0){
+            overlay.remove();
+            openPinPrompt();
+            return;
+          }
           input.value = '';
           input.placeholder = 'رمز غير صحيح';
           input.style.borderColor = 'var(--red-ink)';
@@ -1266,9 +1456,9 @@
         '<button type="button" id="viewRequestsBtn" class="primary">📋 عرض الطلبات' + (unreadCount ? ' (' + unreadCount + ' جديد)' : '') + '</button>' +
         '<button type="button" id="enableNotifBtn">🔔 تفعيل إشعارات المتصفح</button>' +
         '<button type="button" id="toggleEditBtn">' + (editing ? 'إيقاف وضع التعديل' : 'بدء وضع التعديل') + '</button>' +
-        '<div class="accent-row"><label>لون النص الأساسي</label><input type="color" id="inkColor" value="' + rgbToHex(getVar('--ink')) + '"></div>' +
-        '<div class="accent-row"><label>لون التمييز (الأخضر)</label><input type="color" id="greenColor" value="' + rgbToHex(getVar('--green')) + '"></div>' +
-        '<div class="accent-row"><label>لون الخلفية</label><input type="color" id="bgColor" value="' + rgbToHex(getVar('--parchment')) + '"></div>' +
+        '<div class="accent-row"><label>لون النص الأساسي (للموقع كله)</label><input type="color" id="inkColor" value="' + rgbToHex(getVar('--ink')) + '"></div>' +
+        '<div class="accent-row"><label>لون التمييز (للموقع كله)</label><input type="color" id="greenColor" value="' + rgbToHex(getVar('--green')) + '"></div>' +
+        '<div class="accent-row"><label>لون الخلفية (للموقع كله)</label><input type="color" id="bgColor" value="' + rgbToHex(getVar('--parchment')) + '"></div>' +
         '<button type="button" id="saveFileBtn" class="primary">تنزيل نسخة معدّلة</button>' +
         '<button type="button" id="saveLocalBtn" class="local-save">حفظ التعديلات في المتصفح</button>' +
         '<button type="button" id="lockBtn">تسجيل الخروج</button>';
@@ -1323,21 +1513,85 @@
       return '#' + m.slice(0,3).map(n => (+n).toString(16).padStart(2,'0')).join('');
     }
 
-    // ===== شريط تحكم بحجم ولون العنصر المحدد =====
+    // ===== شريط تحكم بحجم ولون النص المحدد (المظلّل) داخل العنصر =====
     let styleToolbar = null;
     let currentTarget = null;
+    let savedRange = null;   // نطاق (Range) النص المظلّل وقت فتح الشريط
+    let styledSpan = null;   // الـ span اللي بنلف بيه النص المظلّل عشان نغيّر لونه/حجمه بدون ما نكرر اللف
+
+    function updateSavedRange(){
+      if(!currentTarget) return;
+      const sel = window.getSelection();
+      if(!sel || sel.rangeCount === 0){ savedRange = null; return; }
+      const range = sel.getRangeAt(0);
+      if(range.collapsed || !currentTarget.contains(range.commonAncestorContainer)){
+        savedRange = null;
+        return;
+      }
+      savedRange = range.cloneRange();
+      styledSpan = null; // في تحديد جديد، لازم نلف span جديد
+    }
+
+    // بيلف النص المحدد بـ span مرة واحدة بس، وبعدين بيرجّع نفس الـ span في أي تعديل تاني (سحب السلايدر مثلاً)
+    function ensureStyledSpan(el){
+      if(styledSpan && el.contains(styledSpan)) return styledSpan;
+      if(savedRange){
+        const span = document.createElement('span');
+        try{
+          savedRange.surroundContents(span);
+        } catch(err){
+          const content = savedRange.extractContents();
+          span.appendChild(content);
+          savedRange.insertNode(span);
+        }
+        styledSpan = span;
+        savedRange = null;
+        return styledSpan;
+      }
+      return null; // مفيش نص متحدد، هنطبّق على العنصر كله زي الأول
+    }
+
+    // الشريط position:fixed، يعني إحداثياته بالنسبة للشاشة الظاهرة (viewport) مش الصفحة كلها،
+    // فمينفعش نضيف عليها قيمة السكرول زي ما كان بيحصل قبل كده (كان بيخلّي الشريط يظهر برّه الشاشة لو نازل في الصفحة)
+    function positionStyleToolbar(el){
+      if(!styleToolbar || !el) return;
+      const rect = el.getBoundingClientRect();
+      let left = rect.left + rect.width / 2;
+      let top = rect.top;
+      const margin = 8;
+      left = Math.max(margin, Math.min(left, window.innerWidth - margin));
+      top = Math.max(margin + 40, top); // سايبين مسافة فوق عشان الشريط بيتحط فوق العنصر
+      styleToolbar.style.left = left + 'px';
+      styleToolbar.style.top = top + 'px';
+    }
+    function repositionStyleToolbarOnScroll(){
+      if(styleToolbar && currentTarget) positionStyleToolbar(currentTarget);
+    }
 
     function closeStyleToolbar(){
       if(styleToolbar){ styleToolbar.remove(); styleToolbar = null; }
       if(currentTarget){ currentTarget.classList.remove('sel-active'); currentTarget = null; }
+      savedRange = null;
+      styledSpan = null;
+      window.removeEventListener('scroll', repositionStyleToolbarOnScroll, true);
+      window.removeEventListener('resize', repositionStyleToolbarOnScroll);
     }
 
     function openStyleToolbar(el){
       closeStyleToolbar();
       currentTarget = el;
       el.classList.add('sel-active');
-      const currentSize = parseFloat(getComputedStyle(el).fontSize) || 16;
-      const currentColor = rgbToHex(getComputedStyle(el).color);
+      updateSavedRange();
+
+      // لو فيه نص متحدد، الحجم واللون الابتدائي بياخدهم من النص المحدد نفسه مش من العنصر كله
+      let refEl = el;
+      if(savedRange){
+        const startNode = savedRange.startContainer;
+        refEl = startNode.nodeType === 1 ? startNode : startNode.parentElement;
+        if(!refEl || !el.contains(refEl)) refEl = el;
+      }
+      const currentSize = parseFloat(getComputedStyle(refEl).fontSize) || 16;
+      const currentColor = rgbToHex(getComputedStyle(refEl).color);
 
       styleToolbar = document.createElement('div');
       styleToolbar.className = 'style-toolbar';
@@ -1347,16 +1601,20 @@
         '<button type="button" class="st-close" id="stClose">✕</button>';
       document.body.appendChild(styleToolbar);
 
-      const rect = el.getBoundingClientRect();
-      styleToolbar.style.top = (rect.top + window.scrollY) + 'px';
-      styleToolbar.style.left = (rect.left + window.scrollX + rect.width / 2) + 'px';
+      positionStyleToolbar(el);
+      window.addEventListener('scroll', repositionStyleToolbarOnScroll, true);
+      window.addEventListener('resize', repositionStyleToolbarOnScroll);
 
       styleToolbar.querySelector('#sizeRange').addEventListener('input', e => {
-        el.style.fontSize = e.target.value + 'px';
+        const span = ensureStyledSpan(el);
+        if(span){ span.style.fontSize = e.target.value + 'px'; }
+        else { el.style.fontSize = e.target.value + 'px'; }
         styleToolbar.querySelector('#sizeVal').textContent = e.target.value;
       });
       styleToolbar.querySelector('#colorPick').addEventListener('input', e => {
-        el.style.color = e.target.value;
+        const span = ensureStyledSpan(el);
+        if(span){ span.style.color = e.target.value; }
+        else { el.style.color = e.target.value; }
       });
       styleToolbar.querySelector('#stClose').addEventListener('click', (e) => {
         e.stopPropagation();
@@ -1364,11 +1622,19 @@
       });
     }
 
+    document.addEventListener('mouseup', () => {
+      if(document.body.classList.contains('edit-mode') && currentTarget) updateSavedRange();
+    });
+    document.addEventListener('keyup', () => {
+      if(document.body.classList.contains('edit-mode') && currentTarget) updateSavedRange();
+    });
+
     document.addEventListener('click', (e) => {
       if(!document.body.classList.contains('edit-mode')) return;
       const el = e.target.closest('[contenteditable="true"]');
       if(el){
         if(el !== currentTarget) openStyleToolbar(el);
+        else updateSavedRange();
       } else if(!e.target.closest('.style-toolbar')){
         closeStyleToolbar();
       }
@@ -1378,7 +1644,7 @@
       '.brand', '.hero h1', '.hero p.lede', '.figure-row .label', '.figure-row .val',
       '.about-text p', '.cv-item .role', '.cv-item .meta', '.cv-item .desc', '.cv-item .desc-list li',
       '.cv-block h3', '.skill-tag', '.service-row h3', '.service-row p', '.service-num',
-      '.client-card h3', '.client-card p', '.client-card .ico', '.section-head h2', '.acct-code',
+      '.client-card h3', '.client-card p', '.section-head h2', '.acct-code',
       '.contact-note h3', '.contact-note p', '.contact-list li', 'footer .wrap'
     ].join(', ');
 
@@ -1404,8 +1670,13 @@
         } },
       { selector: '.clients-grid', itemSelector: '.client-card', label: 'إضافة نشاط', template: function(){
           const d = document.createElement('div'); d.className = 'client-card';
-          d.innerHTML = '<div class="ico">📌</div><h3>نشاط جديد</h3><p>وصف مختصر لنوع النشاط.</p>';
+          d.innerHTML = '<div class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 3l2.2 5.5L20 9l-4.4 3.8L17 19l-5-3.2L7 19l1.4-6.2L4 9l5.8-.5L12 3Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></div><h3>نشاط جديد</h3><p>وصف مختصر لنوع النشاط.</p>';
           return d;
+        } },
+      { selector: '.contact-list', itemSelector: 'li', label: 'إضافة سطر', template: function(){
+          const li = document.createElement('li');
+          li.innerHTML = '<span class="dot"></span> ميزة جديدة';
+          return li;
         } }
     ];
 
@@ -1512,6 +1783,9 @@
 
     // ===== حفظ التعديلات محليًا في المتصفح =====
     const LOCAL_STORAGE_KEY = 'daftari_accountant_page_v1';
+    // رقم نسخة التصميم — لازم يتغيّر كل ما تتعمل تحديثة جديدة على شكل القالب نفسه (CSS/HTML)
+    // عشان أي نسخة محفوظة قديمة (بتصميم قديم) متبقاش تطغى على التصميم الجديد تلقائيًا
+    const TEMPLATE_VERSION = 3;
 
     function getCleanContentClone(){
       const clone = document.getElementById('page-content').cloneNode(true);
@@ -1532,6 +1806,7 @@
             green: getVar('--green'),
             parchment: getVar('--parchment')
           },
+          templateVersion: TEMPLATE_VERSION,
           savedAt: Date.now()
         };
         if(__fbDb){
@@ -1553,6 +1828,9 @@
 
     function applySavedContent(saved){
       if(!saved || !saved.html) return;
+      // لو النسخة المحفوظة اترفعت قبل تحديث التصميم الحالي (أو من غير رقم نسخة أصلًا)،
+      // نتجاهلها عشان محدش يفاجأ إن التصميم القديم رجع لوحده فوق أي تحديث جديد للقالب
+      if(!saved.templateVersion || saved.templateVersion < TEMPLATE_VERSION) return;
       const container = document.getElementById('page-content');
       container.innerHTML = saved.html;
       if(saved.colors){
@@ -1619,6 +1897,7 @@
     }
   })();
   }, 'أدوات المالك');
-</script>
+</script><div class="owner-toolbar"><button class="owner-btn" id="ownerBtn" title="أدوات المالك">🔒<span class="req-badge" id="reqBadge"></span></button><div class="save-toast">تم تنزيل نسخة معدّلة من الصفحة</div></div>
+
 
 </body></html>
