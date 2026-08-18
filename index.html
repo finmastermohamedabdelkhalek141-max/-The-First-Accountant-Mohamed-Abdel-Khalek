@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- saved from url=(0194)file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8_%D8%A7%D9%84%D8%A3%D9%88%D9%84_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123_5.html -->
+<!-- saved from url=(0197)file:///C:/Users/hp/Downloads/%D8%A7%D9%84%D9%85%D8%AD%D8%A7%D8%B3%D8%A8_%D8%A7%D9%84%D8%A3%D9%88%D9%84_%D9%85%D8%AD%D9%85%D8%AF_%D8%B9%D8%A8%D8%AF_%D8%A7%D9%84%D8%AE%D8%A7%D9%84%D9%82123456_3.html -->
 <html lang="ar" dir="rtl"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -289,6 +289,73 @@
   }
   @media (prefers-reduced-motion: reduce){
     .reveal .cv-item, .reveal .service-row, .reveal .client-card, .reveal .skill-tag, .reveal .figure-row{ opacity:1; transition:none; }
+  }
+
+  /* ===== الجولة الصوتية المُرشدة: كل بند بيظهر ويتقرا، ولما يخلص صوته يظهر اللي بعده،
+     ولما يخلص قسم كامل يظهر القسم اللي بعده. الأنماط دي شغالة بس وقت تفعيل الجولة (body.tour-active)
+     عشان متأثرش على التصفح العادي / التمرير قبل ما المستخدم يدوس زرار الاستماع. ===== */
+  body.tour-active .wrap.reveal{
+    transition:opacity .7s var(--ease), transform .7s var(--ease);
+  }
+  body.tour-active .wrap.reveal.tour-hidden{
+    opacity:0!important; transform:translateY(30px)!important; pointer-events:none;
+  }
+  body.tour-active .about-text>p,
+  body.tour-active .cv-item,
+  body.tour-active .skill-tag,
+  body.tour-active .service-row,
+  body.tour-active .client-card,
+  body.tour-active .contact-list>li{
+    opacity:0!important;
+    transform:translateY(14px);
+    transition:opacity .55s var(--ease), transform .55s var(--ease);
+  }
+  body.tour-active .about-text>p.tour-visible,
+  body.tour-active .cv-item.tour-visible,
+  body.tour-active .skill-tag.tour-visible,
+  body.tour-active .service-row.tour-visible,
+  body.tour-active .client-card.tour-visible,
+  body.tour-active .contact-list>li.tour-visible{
+    opacity:1!important;
+    transform:translateY(0);
+  }
+  body.tour-active .tour-speaking{
+    outline:2px solid var(--gold); outline-offset:6px; border-radius:6px;
+    background:rgba(231,198,126,0.10);
+  }
+  @media (prefers-reduced-motion: reduce){
+    body.tour-active .wrap.reveal,
+    body.tour-active .about-text>p, body.tour-active .cv-item, body.tour-active .skill-tag,
+    body.tour-active .service-row, body.tour-active .client-card, body.tour-active .contact-list>li{
+      transition:none;
+    }
+  }
+  .tour-play-btn{
+    position:fixed; left:22px; bottom:22px; z-index:60;
+    display:flex; align-items:center; gap:8px;
+    background:linear-gradient(155deg, var(--green) 0%, var(--green-2) 100%);
+    color:var(--parchment); border:1px solid rgba(228,198,135,0.5);
+    padding:12px 20px; border-radius:30px;
+    font-family:'Cairo', sans-serif; font-weight:700; font-size:.85rem;
+    box-shadow:0 14px 26px -12px rgba(44,89,71,0.6);
+    cursor:pointer; transition:.25s var(--ease);
+  }
+  .tour-play-btn:hover{ transform:translateY(-2px); box-shadow:0 18px 30px -12px rgba(44,89,71,0.7); }
+  @media(max-width:760px){
+    .tour-play-btn{ left:14px; bottom:14px; padding:10px 16px; font-size:.8rem; }
+  }
+  .tour-closing-text{ display:none; }
+  body.edit-mode .tour-closing-text{
+    display:block;
+    max-width:1040px; margin:32px auto 0; padding:16px 18px;
+    border:1px dashed var(--gold); border-radius:8px;
+    background:rgba(231,198,126,0.08);
+    color:var(--text); font-size:.95rem; line-height:1.8;
+  }
+  body.edit-mode .tour-closing-text::before{
+    content:"🔊 فقرة ختامية صوتية فقط — مش هتظهر للزوار، بتتقرا بس في آخر الجولة الصوتية";
+    display:block; font-family:'Cairo', sans-serif; font-weight:700; font-size:.75rem;
+    color:var(--gold); margin-bottom:8px;
   }
 
   .section-head{
@@ -711,15 +778,15 @@
         <p class="lede">خبرة 5 سنوات في القوائم المالية والتحليل المالي، أقدّمها لك بدقة والتزام في مواعيدها — من غير ما تتحمّل تكلفة تعيين محاسب بدوام كامل.</p>
       </div>
       <div class="ledger-page right">
-        <div class="figure-row">
+        <div class="figure-row stagger-in" style="transition-delay: 0s;">
           <span class="label">سنوات الخبرة</span>
           <span class="val">5 سنوات</span>
         </div>
-        <div class="figure-row">
+        <div class="figure-row stagger-in" style="transition-delay: 0s;">
           <span class="label">التخصص</span>
           <span class="val credit">قوائم مالية و التحليل المالي</span>
         </div>
-        <div class="figure-row">
+        <div class="figure-row stagger-in" style="transition-delay: 0s;">
           <span class="label">نوع التعاون</span>
           <span class="val">دوام جزئي / بالمشروع</span>
         </div>
@@ -727,7 +794,7 @@
     </div>
     <div class="owner-portrait" id="ownerPortrait">
       <img id="ownerPortraitImg" alt="الصورة الشخصية">
-      <button type="button" class="owner-portrait-remove" id="ownerPortraitRemove" title="حذف الصورة">×</button>
+      <button type="button" class="owner-portrait-remove" id="ownerPortraitRemove" title="حذف الصورة" data-wired="1">×</button>
     </div>
     </div>
   </div>
@@ -909,6 +976,9 @@
   </div>
 </section>
 
+<!-- فقرة ختامية صوتية فقط: مش بتظهر للزوار خالص، وبتتقرا بس في آخر الجولة الصوتية المُرشدة بعد ما كل الأقسام تخلص -->
+<p class="tour-closing-text" id="tourClosingText">اكتب هنا نص الفقرة الختامية اللي هتتقرا بس في آخر الجولة الصوتية.</p>
+
 <footer>
   <div class="wrap"><p><span style="white-space: pre-wrap;"><strong>جميع الحقوق محفوظة © <span id="year">2026</span> – تصميم وتنفيذ: المحاسب الأول محمد عبد الخالق</strong></span></p></div>
 </footer>
@@ -1084,6 +1154,7 @@
     }
 
     document.addEventListener('mouseover', function(e){
+      if(document.body.classList.contains('tour-active')) return; // منمنعش تعارض مع الجولة الصوتية الشغالة
       const item = e.target.closest(ITEM_SELECTOR);
       if(!item || item === currentItem) return;
       currentItem = item;
@@ -1116,6 +1187,117 @@
       speakItem(item);
     });
   }, 'قراءة البنود صوتيًا');
+
+  // ================= الجولة الصوتية المُرشدة: البند بيظهر ويتقرا، ولما يخلص صوته يظهر اللي بعده،
+  // ولما يخلص القسم كله يظهر القسم اللي بعده — لحد آخر قسم في الصفحة ================
+  safeRun(function(){
+    if(!('speechSynthesis' in window)) return; // المتصفح ده مش بيدعم النطق، الصفحة بتشتغل عادي بدون الجولة
+
+    const SECTION_SELECTOR = '.wrap.reveal';
+    const TOUR_ITEM_SELECTOR = '.about-text > p, .cv-item, .skill-tag, .service-row, .client-card, .contact-list > li';
+    const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const sections = Array.from(document.querySelectorAll(SECTION_SELECTOR));
+    if(!sections.length) return;
+
+    let running = false;
+    let cancelled = false;
+
+    function wait(ms){ return new Promise(resolve => setTimeout(resolve, ms)); }
+
+    function itemText(item){
+      const clone = item.cloneNode(true);
+      clone.querySelectorAll('.remove-item-btn, .remove-bullet-btn, .add-item-btn, .add-bullet-btn').forEach(el => el.remove());
+      return clone.textContent.replace(/\s+/g, ' ').trim();
+    }
+
+    function speak(text){
+      return new Promise(resolve => {
+        if(!text || reducedMotion){ resolve(); return; }
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'ar-EG';
+        utter.rate = 0.98;
+        utter.onend = resolve;
+        utter.onerror = resolve;
+        window.speechSynthesis.speak(utter);
+      });
+    }
+
+    async function revealItem(item){
+      item.classList.add('tour-visible', 'tour-speaking');
+      item.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block:'center'});
+      await wait(reducedMotion ? 0 : 450);
+    }
+
+    function setBtnState(state){
+      if(state === 'running'){ playBtn.innerHTML = '⏸ إيقاف العرض الصوتي'; }
+      else if(state === 'done'){ playBtn.innerHTML = '🔁 إعادة العرض الصوتي'; }
+      else { playBtn.innerHTML = '🔊 استمع للعرض الصوتي'; }
+    }
+
+    async function runTour(){
+      if(running) return;
+      running = true;
+      cancelled = false;
+      document.body.classList.add('tour-active');
+      setBtnState('running');
+
+      sections.forEach(sec => sec.classList.add('tour-hidden'));
+      document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.remove('tour-visible', 'tour-speaking'));
+
+      for(const section of sections){
+        if(cancelled) break;
+        section.classList.remove('tour-hidden');
+        section.classList.add('show');
+        const head = section.querySelector('.section-head');
+        (head || section).scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block:'start'});
+        await wait(reducedMotion ? 0 : 500);
+
+        const items = Array.from(section.querySelectorAll(TOUR_ITEM_SELECTOR));
+        for(const item of items){
+          if(cancelled) break;
+          await revealItem(item);
+          await speak(itemText(item));
+          item.classList.remove('tour-speaking');
+          await wait(180);
+        }
+      }
+
+      // فقرة ختامية صوتية فقط — بتتقرا في آخر الجولة بعد كل الأقسام، ومش بتظهر للزوار خالص
+      if(!cancelled){
+        const closing = document.getElementById('tourClosingText');
+        if(closing){
+          const closingText = closing.textContent.replace(/\s+/g, ' ').trim();
+          if(closingText) await speak(closingText);
+        }
+      }
+
+      document.body.classList.remove('tour-active');
+      running = false;
+      if(!cancelled) setBtnState('done'); else setBtnState('idle');
+    }
+
+    function stopTour(){
+      cancelled = true;
+      window.speechSynthesis.cancel();
+      document.body.classList.remove('tour-active');
+      sections.forEach(sec => sec.classList.remove('tour-hidden'));
+      document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.add('tour-visible'));
+      running = false;
+      setBtnState('idle');
+    }
+
+    const playBtn = document.createElement('button');
+    playBtn.type = 'button';
+    playBtn.id = 'tourPlayBtn';
+    playBtn.className = 'tour-play-btn';
+    setBtnState('idle');
+    playBtn.addEventListener('click', function(){
+      if(running) stopTour(); else runTour();
+    });
+    document.body.appendChild(playBtn);
+  }, 'الجولة الصوتية المرشدة');
 
   // ================= إرسال نموذج العميل + رسالة تأكيد واضحة =================
   window.__handleLeadSubmit = function(){
@@ -1818,7 +2000,7 @@
       '.about-text p', '.cv-item .role', '.cv-item .meta', '.cv-item .desc', '.cv-item .desc-list li',
       '.cv-block h3', '.skill-tag', '.service-row h3', '.service-row p', '.service-num',
       '.client-card h3', '.client-card p', '.section-head h2', '.acct-code',
-      '.contact-note h3', '.contact-note p', '.contact-list li', 'footer .wrap'
+      '.contact-note h3', '.contact-note p', '.contact-list li', 'footer .wrap', '.tour-closing-text'
     ].join(', ');
 
     const GROUPS = [
@@ -2063,10 +2245,13 @@
 
     function downloadEditedPage(){
       const clone = document.documentElement.cloneNode(true);
-      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove').forEach(el => el.remove());
+      clone.querySelectorAll('.owner-toolbar, .add-item-btn, .remove-item-btn, .add-bullet-btn, .remove-bullet-btn, .pin-overlay, .style-toolbar, .req-overlay, .owner-portrait-remove, #tourPlayBtn').forEach(el => el.remove());
       clone.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
       clone.querySelectorAll('.item-wrap').forEach(el => el.classList.remove('item-wrap'));
       clone.querySelectorAll('.sel-active').forEach(el => el.classList.remove('sel-active'));
+      clone.querySelectorAll('.tour-hidden, .tour-visible, .tour-speaking').forEach(el => el.classList.remove('tour-hidden', 'tour-visible', 'tour-speaking'));
+      const cloneBody = clone.querySelector('body');
+      if(cloneBody) cloneBody.classList.remove('tour-active');
       clone.classList.remove('edit-mode');
       const html = '<!DOCTYPE html>\n' + clone.outerHTML;
       const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
