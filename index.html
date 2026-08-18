@@ -20,6 +20,7 @@
     var isIOS = /iPhone|iPad|iPod/i.test(ua);
 
     window.__inAppSource = isFacebook ? 'facebook' : isInstagram ? 'instagram' : isTikTok ? 'tiktok' : isWhatsApp ? 'whatsapp' : isLine ? 'line' : isSnapchat ? 'snapchat' : isTwitter ? 'twitter' : isLinkedIn ? 'linkedin' : isPinterest ? 'pinterest' : 'other';
+    window.__isInAppBrowser = isInApp;
 
     // أندرويد: تحويل مباشر وتلقائي لكروم عن طريق Intent URL
     // browser_fallback_url: لو كروم مش متثبّت، بيفتح نفس الرابط في المتصفح الافتراضي بدل ما يفشل التحويل بصمت
@@ -368,41 +369,10 @@
     .reveal .cv-item, .reveal .service-row, .reveal .client-card, .reveal .skill-tag, .reveal .figure-row{ opacity:1; transition:none; }
   }
 
-  body.tour-active .wrap.reveal{
-    transition:opacity .7s var(--ease), transform .7s var(--ease);
-  }
-  body.tour-active .wrap.reveal.tour-hidden{
-    opacity:0!important; transform:translateY(30px)!important; pointer-events:none;
-  }
-  body.tour-active .about-text>p,
-  body.tour-active .cv-item,
-  body.tour-active .skill-tag,
-  body.tour-active .service-row,
-  body.tour-active .client-card,
-  body.tour-active .contact-list>li{
-    opacity:0!important;
-    transform:translateY(14px);
-    transition:opacity .55s var(--ease), transform .55s var(--ease);
-  }
-  body.tour-active .about-text>p.tour-visible,
-  body.tour-active .cv-item.tour-visible,
-  body.tour-active .skill-tag.tour-visible,
-  body.tour-active .service-row.tour-visible,
-  body.tour-active .client-card.tour-visible,
-  body.tour-active .contact-list>li.tour-visible{
-    opacity:1!important;
-    transform:translateY(0);
-  }
   body.tour-active .tour-speaking{
     outline:2px solid var(--gold); outline-offset:6px; border-radius:6px;
     background:rgba(231,198,126,0.10);
-  }
-  @media (prefers-reduced-motion: reduce){
-    body.tour-active .wrap.reveal,
-    body.tour-active .about-text>p, body.tour-active .cv-item, body.tour-active .skill-tag,
-    body.tour-active .service-row, body.tour-active .client-card, body.tour-active .contact-list>li{
-      transition:none;
-    }
+    transition:background .35s var(--ease), outline-color .35s var(--ease);
   }
   .tour-play-btn{
     position:fixed; right:22px; bottom:22px; z-index:60;
@@ -1272,8 +1242,10 @@
     const TOUR_ITEM_SELECTOR = '.about-text > p, .cv-item, .skill-tag, .service-row, .client-card, .contact-list > li';
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    const sections = Array.from(document.querySelectorAll(SECTION_SELECTOR));
-    if(!sections.length) return;
+    // بنجيب الأقسام والبنود من الصفحة في كل مرة نشغّل فيها الجولة (مش نص ثابت محفوظ من وقت تحميل الصفحة)
+    // عشان لو المالك عدّل أي نص وحفظه، الجولة تقرا آخر نسخة موجودة فعليًا على الشاشة
+    function getSections(){ return Array.from(document.querySelectorAll(SECTION_SELECTOR)); }
+    if(!getSections().length) return;
 
     let running = false;
     let cancelled = false;
@@ -1358,8 +1330,8 @@
       });
     }
 
-    async function revealItem(item){
-      item.classList.add('tour-visible', 'tour-speaking');
+    async function focusItem(item){
+      item.classList.add('tour-speaking');
       item.scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block:'center'});
       await wait(reducedMotion ? 0 : 450);
     }
@@ -1396,21 +1368,21 @@
       const voices = await voicesReady();
       cachedArabicVoice = pickArabicVoice(voices);
 
-      sections.forEach(sec => sec.classList.add('tour-hidden'));
-      document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.remove('tour-visible', 'tour-speaking'));
+      document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.remove('tour-speaking'));
 
+      const sections = getSections();
       for(const section of sections){
         if(cancelled) break;
-        section.classList.remove('tour-hidden');
         section.classList.add('show');
         const head = section.querySelector('.section-head');
         (head || section).scrollIntoView({behavior: reducedMotion ? 'auto' : 'smooth', block:'start'});
         await wait(reducedMotion ? 0 : 500);
 
+        // نجيب البنود من نفس الـ section دلوقتي بالظبط (مش من نسخة قديمة) عشان ناخد آخر تحديث للنص
         const items = Array.from(section.querySelectorAll(TOUR_ITEM_SELECTOR));
         for(const item of items){
           if(cancelled) break;
-          await revealItem(item);
+          await focusItem(item);
           await speak(itemText(item));
           item.classList.remove('tour-speaking');
           await wait(180);
@@ -1434,8 +1406,7 @@
       cancelled = true;
       if('speechSynthesis' in window) window.speechSynthesis.cancel();
       document.body.classList.remove('tour-active');
-      sections.forEach(sec => sec.classList.remove('tour-hidden'));
-      document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.add('tour-visible'));
+      document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.remove('tour-speaking'));
       running = false;
       setBtnState('idle');
     }
@@ -1447,6 +1418,23 @@
     setBtnState('idle');
     playBtn.addEventListener('click', function(){
       if(running){ stopTour(); return; }
+
+      // لو لسه جوه متصفح مدمج (واتساب/فيسبوك/انستجرام/تيك توك...) الصوت مش هيشتغل خالص
+      if(window.__isInAppBrowser){
+        const url = location.href;
+        const doCopy = function(){
+          showTourToast('تم نسخ الرابط ✓ افتحه في Safari أو Chrome عشان الصوت يشتغل');
+        };
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url).then(doCopy).catch(function(){
+            window.prompt('انسخ الرابط ده وافتحه في Safari أو Chrome:', url);
+          });
+        } else {
+          window.prompt('انسخ الرابط ده وافتحه في Safari أو Chrome:', url);
+        }
+        return;
+      }
+
       if(!speechSupported){
         showTourToast('المتصفح ده مش بيدعم النطق الصوتي — هتشتغل جولة عرض بصري بدون صوت');
       }
@@ -2381,7 +2369,7 @@
       clone.querySelectorAll('[data-wired]').forEach(el => el.removeAttribute('data-wired'));
       clone.querySelectorAll('.item-wrap').forEach(el => el.classList.remove('item-wrap'));
       clone.querySelectorAll('.sel-active').forEach(el => el.classList.remove('sel-active'));
-      clone.querySelectorAll('.tour-hidden, .tour-visible, .tour-speaking').forEach(el => el.classList.remove('tour-hidden', 'tour-visible', 'tour-speaking'));
+      clone.querySelectorAll('.tour-speaking').forEach(el => el.classList.remove('tour-speaking'));
       const cloneBody = clone.querySelector('body');
       if(cloneBody) cloneBody.classList.remove('tour-active');
       clone.classList.remove('edit-mode');
