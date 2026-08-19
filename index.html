@@ -1245,28 +1245,165 @@ function showManualCopyModal(url, message){
     }
   }, 'تأثير الظهور');
 
-  // ================= قراءة البند صوتيًا لما الماوس يقف عليه (Web Speech API) =================
+  // ================= محرك نطق مشترك (Web Speech API) =================
+  // كروم وبعض متصفحات الموبايل فيها باج معروف: الجملة الطويلة بتتقطع فجأة بعد حوالي 15 ثانية.
+  // الحل: أي نص طويل بنقسّمه لجمل قصيرة ونقراها ورا بعض بدل ما نديله كتلة واحدة كبيرة.
   safeRun(function(){
     if(!('speechSynthesis' in window)) return;
-    const ITEM_SELECTOR = window.__STAGGER_ITEM_SELECTOR || '.cv-item, .service-row, .client-card, .skill-tag, .figure-row';
+
+    function pickArabicVoice(voices){
+      if(!voices || !voices.length) return null;
+      return voices.find(v => v.lang === 'ar-EG')
+        || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ar'))
+        || null;
+    }
+
+    let cachedVoice = null;
+    let voiceLoaded = false;
+    function ensureVoice(){
+      return new Promise(resolve => {
+        let voices = window.speechSynthesis.getVoices();
+        if(voices && voices.length){
+          cachedVoice = pickArabicVoice(voices);
+          voiceLoaded = true;
+          resolve(cachedVoice);
+          return;
+        }
+        if(voiceLoaded){ resolve(cachedVoice); return; }
+        let done = false;
+        const finish = () => {
+          if(done) return;
+          done = true;
+          window.speechSynthesis.removeEventListener('voiceschanged', finish);
+          cachedVoice = pickArabicVoice(window.speechSynthesis.getVoices());
+          voiceLoaded = true;
+          resolve(cachedVoice);
+        };
+        window.speechSynthesis.addEventListener('voiceschanged', finish);
+        setTimeout(finish, 1200);
+      });
+    }
+
+    function splitIntoChunks(text, maxLen){
+      maxLen = maxLen || 160;
+      const sentences = text.split(/(?<=[.!؟?؛:])\s+/).filter(Boolean);
+      const chunks = [];
+      let current = '';
+      sentences.forEach(s => {
+        if(current && (current + ' ' + s).trim().length > maxLen){
+          chunks.push(current.trim());
+          current = s;
+        } else {
+          current = (current ? current + ' ' : '') + s;
+        }
+      });
+      if(current.trim()) chunks.push(current.trim());
+      const finalChunks = [];
+      chunks.forEach(c => {
+        if(c.length <= maxLen + 60){ finalChunks.push(c); return; }
+        const words = c.split(' ');
+        let buf = '';
+        words.forEach(w => {
+          if(buf && (buf + ' ' + w).trim().length > maxLen){
+            finalChunks.push(buf.trim());
+            buf = w;
+          } else {
+            buf = (buf ? buf + ' ' : '') + w;
+          }
+        });
+        if(buf.trim()) finalChunks.push(buf.trim());
+      });
+      return finalChunks.length ? finalChunks : [text];
+    }
+
+    function speakChunk(text, voice, rate){
+      return new Promise(resolve => {
+        let settled = false;
+        const done = () => { if(settled) return; settled = true; resolve(); };
+        try{
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'ar-EG';
+          utter.rate = rate || 0.98;
+          if(voice) utter.voice = voice;
+          utter.onend = done;
+          utter.onerror = done;
+          window.speechSynthesis.speak(utter);
+        }catch(e){ done(); return; }
+        const estMs = Math.min(12000, Math.max(1200, text.length * 110));
+        let checks = 0;
+        const maxChecks = Math.ceil(estMs / 200) + 6;
+        const poll = setInterval(() => {
+          checks++;
+          if(settled){ clearInterval(poll); return; }
+          if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
+            clearInterval(poll); done(); return;
+          }
+          if(checks >= maxChecks){ clearInterval(poll); done(); }
+        }, 200);
+      });
+    }
+
+    let currentToken = 0;
+    async function speak(text, opts){
+      opts = opts || {};
+      text = (text || '').replace(/\s+/g, ' ').trim();
+      if(!text) return;
+      const myToken = ++currentToken;
+      window.speechSynthesis.cancel();
+      await new Promise(r => setTimeout(r, 30));
+      const voice = await ensureVoice();
+      if(!voice && opts.onNoVoice) opts.onNoVoice();
+      if(myToken !== currentToken) return;
+      const chunks = splitIntoChunks(text);
+      for(const chunk of chunks){
+        if(myToken !== currentToken) return;
+        if(opts.isCancelled && opts.isCancelled()) return;
+        await speakChunk(chunk, voice, opts.rate);
+      }
+    }
+    function stop(){
+      currentToken++;
+      window.speechSynthesis.cancel();
+    }
+
+    window.__tts = { speak, stop, ensureVoice };
+  }, 'محرك النطق المشترك');
+
+  // ================= قراءة البند صوتيًا لما الماوس يقف عليه (Web Speech API) =================
+  safeRun(function(){
+    if(!('speechSynthesis' in window) || !window.__tts) return;
+    // نطاق واسع يغطي كل نصوص الصفحة تقريبًا (عناوين، فقرات، بطاقات، قوائم) مش بس البطاقات المحدودة اللي كانت قبل كده،
+    // عشان أي حتة نص المستخدم يدوس/يمرر عليها أو يحددها بالتاب تتقرا
+    const ITEM_SELECTOR = [
+      '.hero h1', '.hero .lede', '.figure-row',
+      '.about-text > p',
+      '.cv-item', '.cv-block h3', '.skill-tag',
+      '.service-row',
+      '.client-card',
+      '.section-head h2', '.acct-code',
+      '.contact-note h3', '.contact-note p', '.contact-list > li'
+    ].join(', ');
+    const NON_READ_TARGET = 'a, button, input, textarea, .remove-item-btn, .remove-bullet-btn, .add-item-btn, .add-bullet-btn';
     const HOVER_DELAY_MS = 250;
     let hoverTimer = null;
     let currentItem = null;
 
     function speakItem(item){
-      window.speechSynthesis.cancel();
       const clone = item.cloneNode(true);
       clone.querySelectorAll('.remove-item-btn, .remove-bullet-btn, .add-item-btn, .add-bullet-btn').forEach(el => el.remove());
       const text = clone.textContent.replace(/\s+/g, ' ').trim();
       if(!text) return;
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.lang = 'ar-EG';
-      utter.rate = 1;
-      window.speechSynthesis.speak(utter);
+      window.__tts.speak(text, {rate: 1});
+    }
+
+    function isBlocked(e){
+      if(document.body.classList.contains('edit-mode')) return true;
+      if(e.target.closest(NON_READ_TARGET)) return true;
+      return false;
     }
 
     document.addEventListener('mouseover', function(e){
-      if(document.body.classList.contains('tour-active')) return;
+      if(document.body.classList.contains('tour-active') || isBlocked(e)) return;
       const item = e.target.closest(ITEM_SELECTOR);
       if(!item || item === currentItem) return;
       currentItem = item;
@@ -1281,22 +1418,96 @@ function showManualCopyModal(url, message){
       clearTimeout(hoverTimer);
       if(currentItem === item){
         currentItem = null;
-        window.speechSynthesis.cancel();
+        window.__tts.stop();
       }
     });
     document.addEventListener('touchstart', function(e){
+      if(isBlocked(e)) return;
       const item = e.target.closest(ITEM_SELECTOR);
       if(!item) return;
-      if(e.target.closest('.remove-item-btn, .remove-bullet-btn, .add-item-btn, .add-bullet-btn')) return;
       clearTimeout(hoverTimer);
       speakItem(item);
     }, {passive:true});
+    // نسخة click بديلة (بعض متصفحات الويب المدمجة زي واتساب مش بتطلق touchstart بانتظام)
+    document.addEventListener('click', function(e){
+      if(document.body.classList.contains('tour-active') || isBlocked(e)) return;
+      const item = e.target.closest(ITEM_SELECTOR);
+      if(!item) return;
+      // لو فيه تحديد نص فعلي، سيب زرار "اسمع النص المحدد" يتكفل بيه بدل ما نقاطعه
+      const sel = window.getSelection();
+      if(sel && sel.toString().trim()) return;
+      clearTimeout(hoverTimer);
+      speakItem(item);
+    });
     document.addEventListener('focusin', function(e){
+      if(isBlocked(e)) return;
       const item = e.target.closest(ITEM_SELECTOR);
       if(!item) return;
       speakItem(item);
     });
   }, 'قراءة البنود صوتيًا');
+
+  // ================= قراءة أي نص المستخدم يحدده يدويًا في الصفحة =================
+  safeRun(function(){
+    if(!('speechSynthesis' in window) || !window.__tts) return;
+    let btn = null;
+
+    function ensureBtn(){
+      if(btn) return btn;
+      btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'selectionReadBtn';
+      btn.textContent = '🔊 اسمع النص المحدد';
+      btn.style.cssText = 'position:fixed;z-index:99998;display:none;background:#111;color:#fff;border:none;border-radius:24px;padding:10px 18px;font-size:14px;font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.28);cursor:pointer;white-space:nowrap;';
+      document.body.appendChild(btn);
+      btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        const text = btn.__selectedText || '';
+        hideBtn();
+        if(text) window.__tts.speak(text);
+      });
+      return btn;
+    }
+
+    function hideBtn(){ if(btn) btn.style.display = 'none'; }
+
+    function showBtnNear(rect, text){
+      const b = ensureBtn();
+      b.__selectedText = text;
+      const top = Math.max(8, rect.top - 46);
+      let left = rect.left + (rect.width / 2) - 95;
+      left = Math.min(Math.max(8, left), window.innerWidth - 200);
+      b.style.top = top + 'px';
+      b.style.left = left + 'px';
+      b.style.display = 'inline-block';
+    }
+
+    function handleSelection(){
+      const sel = window.getSelection();
+      const text = sel ? sel.toString().replace(/\s+/g, ' ').trim() : '';
+      if(!text || !sel.rangeCount){ hideBtn(); return; }
+      // متفعّلش جوه حقول الإدخال والتحرير عشان متتعارضش مع أدوات تعديل النصوص التانية في الصفحة
+      const anchorNode = sel.anchorNode;
+      const el = anchorNode && anchorNode.nodeType === 1 ? anchorNode : (anchorNode ? anchorNode.parentElement : null);
+      if(el && el.closest && el.closest('input, textarea, #selectionReadBtn')){ hideBtn(); return; }
+      try{
+        const rect = sel.getRangeAt(0).getBoundingClientRect();
+        if(rect && (rect.width || rect.height)) showBtnNear(rect, text);
+        else hideBtn();
+      }catch(e){ hideBtn(); }
+    }
+
+    document.addEventListener('mouseup', function(e){
+      if(e.target && e.target.id === 'selectionReadBtn') return;
+      setTimeout(handleSelection, 10);
+    });
+    document.addEventListener('touchend', function(){ setTimeout(handleSelection, 10); }, {passive:true});
+    document.addEventListener('selectionchange', function(){
+      const sel = window.getSelection();
+      if(!sel || !sel.toString().trim()) hideBtn();
+    });
+    document.addEventListener('scroll', hideBtn, {passive:true});
+  }, 'قراءة النص المحدد يدويًا');
 
   // ================= الجولة الصوتية المُرشدة =================
   safeRun(function(){
@@ -1322,75 +1533,21 @@ function showManualCopyModal(url, message){
       return clone.textContent.replace(/\s+/g, ' ').trim();
     }
 
-    function voicesReady(){
-      return new Promise(resolve => {
-        if(!('speechSynthesis' in window)){ resolve([]); return; }
-        let voices = window.speechSynthesis.getVoices();
-        if(voices && voices.length){ resolve(voices); return; }
-        let done = false;
-        const finish = () => {
-          if(done) return;
-          done = true;
-          window.speechSynthesis.removeEventListener('voiceschanged', finish);
-          resolve(window.speechSynthesis.getVoices());
-        };
-        window.speechSynthesis.addEventListener('voiceschanged', finish);
-        setTimeout(finish, 1200);
-      });
-    }
-
-    function pickArabicVoice(voices){
-      if(!voices || !voices.length) return null;
-      return voices.find(v => v.lang === 'ar-EG')
-        || voices.find(v => v.lang && v.lang.toLowerCase().startsWith('ar'))
-        || null;
-    }
-
-    let cachedArabicVoice = null;
     let noVoiceWarned = false;
 
+    // بنستخدم نفس محرك النطق المشترك (window.__tts) اللي بيقسّم النص الطويل لجمل قصيرة قبل ما يقراها،
+    // عشان باج كروم المعروف (النص الطويل بيتقطع فجأة بعد حوالي 15 ثانية) ميأثرش على فقرات زي "الهوية المهنية".
+    // النسخة القديمة كانت بتعمل speak() لكل النص دفعة واحدة، فكانت بتتقطع قبل ما تخلص في الفقرات الطويلة.
     function speak(text){
-      return new Promise(resolve => {
-        if(!text || reducedMotion || !('speechSynthesis' in window)){ resolve(); return; }
-        let settled = false;
-        const done = () => { if(settled) return; settled = true; resolve(); };
-        try{
-          // نلغي أي كلام سابق لسه شغال أو عالق في الطابور قبل ما نبدأ الجملة الجديدة
-          // ده بيمنع مشكلة إن الصوت "يفضل متأخر" ويقرا نص البند اللي فات بدل البند الحالي
-          window.speechSynthesis.cancel();
-          const utter = new SpeechSynthesisUtterance(text);
-          utter.lang = 'ar-EG';
-          utter.rate = 0.98;
-          if(cachedArabicVoice) utter.voice = cachedArabicVoice;
-          else if(!noVoiceWarned){
+      if(!text || reducedMotion || !window.__tts) return Promise.resolve();
+      return window.__tts.speak(text, {
+        rate: 0.98,
+        onNoVoice: function(){
+          if(!noVoiceWarned){
             noVoiceWarned = true;
             showTourToast('الجهاز ده مفيهوش صوت عربي مثبّت — جرّب تفعّل قراءة النصوص باللغة العربية من إعدادات الهاتف');
           }
-          utter.onend = done;
-          utter.onerror = done;
-          // بعض المتصفحات محتاجة لحظة صغيرة بعد cancel() قبل ما تقبل speak() جديد
-          setTimeout(() => {
-            try{ window.speechSynthesis.speak(utter); }catch(e2){ done(); }
-          }, 30);
-        } catch(e){ done(); return; }
-        // نحسب مهلة أطول شوية من تقدير طول النص، وبرضه بنستمر نتأكد إن الكلام لسه شغال فعليًا
-        // قبل ما نقفل الانتظار، عشان النصوص الطويلة (بعد أي تعديل) متتقطعش قبل ما تخلص
-        const estMs = Math.min(20000, Math.max(2500, text.length * 110));
-        let checks = 0;
-        const maxChecks = Math.ceil(estMs / 250) + 4;
-        const poll = setInterval(() => {
-          checks++;
-          if(settled){ clearInterval(poll); return; }
-          if(!window.speechSynthesis.speaking && !window.speechSynthesis.pending){
-            clearInterval(poll);
-            done();
-            return;
-          }
-          if(checks >= maxChecks){
-            clearInterval(poll);
-            done();
-          }
-        }, 250);
+        }
       });
     }
 
@@ -1429,8 +1586,7 @@ function showManualCopyModal(url, message){
       document.body.classList.add('tour-active');
       setBtnState('running');
 
-      const voices = await voicesReady();
-      cachedArabicVoice = pickArabicVoice(voices);
+      if(window.__tts) await window.__tts.ensureVoice();
 
       document.querySelectorAll(TOUR_ITEM_SELECTOR).forEach(it => it.classList.remove('tour-speaking'));
 
